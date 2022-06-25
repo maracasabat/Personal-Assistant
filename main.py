@@ -143,7 +143,8 @@ def to_help(*args):
     return """help - output command, that you can use to get help
     hello - output greeting message
     add - add new contact: like this: Name, Phone, Address, Email, Birthday
-    show - show all contacts"""
+    show - show all contacts
+    show phone - show number of contact"""
 
 
 @input_error
@@ -171,6 +172,11 @@ def add_contact(*args):
     return f"Contact {rec.name.value} has added successfully."
 
 
+@input_error
+def print_phone(*args):
+    return notebook[args[0]]
+
+
 def show_all(*args):
     return "\n".join([f"{k.title()}: {v}" for k, v in notebook.items()]) if len(notebook) > 0 else 'Contacts are empty'
 
@@ -192,7 +198,7 @@ all_commands = {
     greeting: ["hello", "hi"],
     add_contact: ["add", "new", "+"],
     #     change_number: ["change", ],
-    #     print_phone: ["phone", "number"],
+    print_phone: ["phone", "number"],
     show_all: ["show all", "show"],
     to_exit: ["good bye", "close", "exit", ".", "bye"],
     #     del_number: ["del", "delete", "-"],

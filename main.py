@@ -1,6 +1,7 @@
 import pickle
 from collections import UserDict
 from datetime import datetime
+import re
 
 
 class Field:
@@ -18,15 +19,33 @@ class Field:
 
 
 class Name(Field):
-    pass
+    @Field.value.setter
+    def value(self, name: str):
+        if not isinstance(name, str):
+            raise TypeError("Name must be a string")
+        if not re.match(r'^[a-zA-Zа-яА-Я]{2,20}$', name):
+            raise ValueError('Name must be between 2 and 20 characters')
+        self._value = name
 
 
 class Phone(Field):
-    pass
+    @Field.value.setter
+    def value(self, phone: str):
+        if not isinstance(phone, str):
+            raise TypeError('Phone must be a string')
+        if not re.match(r'^\+380\d{3}\d{2}\d{2}\d{2}$', phone):
+            raise ValueError('Phone must be in format +380XXXXXXXXX')
+        self._value = phone
 
 
 class Email(Field):
-    pass
+    @Field.value.setter
+    def value(self, email: str):
+        if not isinstance(email, str):
+            raise TypeError('Emain must be a string')
+        if not re.match(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', email):
+            raise ValueError('Email must be in format')
+        self._value = email
 
 
 class Birthday(Field):
@@ -41,7 +60,14 @@ class Birthday(Field):
 
 
 class Address(Field):
-    pass
+    @Field.value.setter
+    def value(self, address: str):
+        if not isinstance(address, str):
+            raise TypeError('Address must be a string')
+        if not re.match(r'^[a-zA-Zа-яА-Я0-9,. ]{2,20}$', address):
+            raise ValueError('Address must be between 2 and 20 characters')
+        self._value = address
+
 
 class Record:
     def __init__(self, name: Name, phone: Phone, adr: Address, email: Email):
@@ -87,9 +113,9 @@ class AddressBook(UserDict):
                     data = pickle.load(f)
                     self.data = data
                 except EOFError:
-                    print('File data is empty')
+                    return 'File data is empty'
         except FileNotFoundError:
-            print('File data is empty')
+            return 'File data is empty'
 
 
 def input_error(func):
@@ -106,6 +132,13 @@ def input_error(func):
     return inner
 
 
+def to_help(*args):
+    return """help - output command, that you can use to get help
+    hello - output greeting message
+    add - add new contact: like this: Name, Phone, Address, Email, Birthday
+    show - show all contacts"""
+
+
 @input_error
 def greeting(*args):
     return "How can I help you?"
@@ -114,7 +147,7 @@ def greeting(*args):
 @input_error
 def to_exit(*args):
     notebook.save_data()
-    return 'Goodbye!'
+    return 'Goodbye!\nHave a nice day!'
 
 
 notebook = AddressBook()
@@ -147,6 +180,7 @@ all_commands = {
     #     del_contact: ["remove", ],
     #     days_to_births: ["days", "birthday"],
     #     find: ["find", "search"],
+    to_help: ["help", "?", "h"],
 }
 
 
@@ -159,7 +193,7 @@ def command_parser(user_input: str):
 
 def main():
     while True:
-        user_input = input(">>> ")
+        user_input = input('Please enter your command: ')
         command, parser_data = command_parser(user_input)
         print(command(*parser_data))
         if command is to_exit:

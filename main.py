@@ -117,6 +117,13 @@ class AddressBook(UserDict):
         except FileNotFoundError:
             return 'File data is empty'
 
+    def to_find(self, value):
+        result = []
+        for k, v in self.data.items():
+            v = str(v)
+            [result.append(f'{k.title()} {v}') for i in value if i in v]
+        return result
+
 
 def input_error(func):
     def inner(*args, **kwargs):
@@ -168,6 +175,18 @@ def show_all(*args):
     return "\n".join([f"{k.title()}: {v}" for k, v in notebook.items()]) if len(notebook) > 0 else 'Contacts are empty'
 
 
+@input_error
+def find(*args):
+    result_str = ''
+    for i in notebook.to_find(args):
+        result_str += f'{i}\n'
+    return result_str[:-1] if result_str else 'Nothing found'
+
+
+def unknown_command(*args):
+    return 'Unknown command! Enter again!'
+
+
 all_commands = {
 
     greeting: ["hello", "hi"],
@@ -179,7 +198,7 @@ all_commands = {
     #     del_number: ["del", "delete", "-"],
     #     del_contact: ["remove", ],
     #     days_to_births: ["days", "birthday"],
-    #     find: ["find", "search"],
+    find: ["find", "search"],
     to_help: ["help", "?", "h"],
 }
 
@@ -189,6 +208,8 @@ def command_parser(user_input: str):
         for i in value:
             if user_input.lower().startswith(i.lower()):
                 return key, user_input[len(i):].strip().split()
+    else:
+        return unknown_command, []
 
 
 def main():

@@ -135,8 +135,30 @@ def show_all(*args):
     return "\n".join([f"{k.title()}: {v}" for k, v in notebook.items()]) if len(notebook) > 0 else 'Contacts are empty'
 
 
-all_commands = {
+@input_error
+def days_to_births(*args):
+    num = 0
+    try:
+        num = int(args[0])
+    except ValueError:
+        print('Enter integer')
+        return ''
+    res = []
+    for k, v in notebook.items():
+        if v.birthday is None:
+            continue
+        date_now = datetime.now()
+        birthday_date = datetime(year=date_now.year, month=v.birthday.value.month, day=v.birthday.value.day)
+        if date_now > birthday_date:
+            birthday_date = datetime(year=date_now.year + 1, month=v.birthday.value.month,
+                                     day=v.birthday.value.day)
+        result = birthday_date - date_now
+        if result.days >= num:
+            res.append(v)
+    return "\n".join([f"{value.name.value.title()}: {value}" for value in res]) if len(res) > 0 else 'Contacts not found'
 
+
+all_commands = {
     greeting: ["hello", "hi"],
     add_contact: ["add", "new", "+"],
     #     change_number: ["change", ],
@@ -145,7 +167,7 @@ all_commands = {
     to_exit: ["good bye", "close", "exit", ".", "bye"],
     #     del_number: ["del", "delete", "-"],
     #     del_contact: ["remove", ],
-    #     days_to_births: ["days", "birthday"],
+    days_to_births: ["days", "birthday"],
     #     find: ["find", "search"],
 }
 

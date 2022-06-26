@@ -4,6 +4,12 @@ from collections import UserDict
 from datetime import datetime
 import re
 
+ADDRESSBOOK_DB = "data.bin"
+PHONE_REGEX = re.compile(r"^\+?(\d{2})?\(?(0\d{2})\)?(\d{7}$)")
+EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+NAME_REGEX = re.compile(r'^[a-zA-Zа-яА-Я]{2,20}$')
+ADDRESS_REGEX = re.compile(r'^[a-zA-Zа-яА-Я0-9,. ]{2,20}$')
+
 
 class Field:
     def __init__(self, value) -> None:
@@ -27,7 +33,7 @@ class Name(Field):
     def value(self, name: str):
         if not isinstance(name, str):
             raise TypeError("Name must be a string")
-        if not re.match(r'^[a-zA-Zа-яА-Я]{2,20}$', name):
+        if not re.match(NAME_REGEX, name):
             raise ValueError('Name must be between 2 and 20 characters')
         self._value = name
 
@@ -37,17 +43,23 @@ class Phone(Field):
     def value(self, phone: str):
         if not isinstance(phone, str):
             raise TypeError('Phone must be a string')
-        if not re.match(r'^\+380\d{3}\d{2}\d{2}\d{2}$', phone):
-            raise ValueError('Phone must be in format +380XXXXXXXXX')
-        self._value = phone
+        if bool(re.match(PHONE_REGEX, phone)):
+            if len(phone) == 12:
+                self._value = f'+{phone}'
+            elif len(phone) == 10:
+                self._value = f'+38{phone}'
+            elif len(phone) == 13:
+                self._value = phone
+        else:
+            raise ValueError(f"Phone must be in format +380XXXXXXXXX/380XXXXXXXXX/0XXXXXXXXX")
 
 
 class Email(Field):
     @Field.value.setter
     def value(self, email: str):
         if not isinstance(email, str):
-            raise TypeError('Emain must be a string')
-        if not re.match(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', email):
+            raise TypeError('Email must be a string')
+        if not re.match(EMAIL_REGEX, email):
             raise ValueError('Email not valid')
         self._value = email
 
@@ -60,7 +72,7 @@ class Birthday(Field):
             date = datetime(day=int(d), month=int(m), year=int(y))
             self._value = date
         except ValueError:
-            print('Enter date like 02-05-2022')
+            print('Enter date like dd-mm-yyyy')
 
 
 class Address(Field):
@@ -68,7 +80,7 @@ class Address(Field):
     def value(self, address: str):
         if not isinstance(address, str):
             raise TypeError('Address must be a string')
-        if not re.match(r'^[a-zA-Zа-яА-Я0-9,. ]{2,20}$', address):
+        if not re.match(ADDRESS_REGEX, address):
             raise ValueError('Address must be between 2 and 20 characters')
         self._value = address
 
@@ -92,8 +104,8 @@ class Record:
 
     def __repr__(self):
         if self.birthday:
-            return f'{", ".join([p.value for p in self.phones])}, Birthday: {self.birthday.value}, Address: {self.address.value}, Email: {self.email.value}\n'
-        return f'{", ".join([p.value for p in self.phones])}, Address: {self.address.value}, Email: {self.email.value}\n'
+            return f'{", ".join([p.value for p in self.phones])} Birthday: {self.birthday.value.date()}\nAddress: {self.address.value}, Email: {self.email.value}'
+        return f'{", ".join([p.value for p in self.phones])}\nAddress: {self.address.value}, Email: {self.email.value}'
 
 
 class AddressBook(UserDict):
@@ -107,12 +119,12 @@ class AddressBook(UserDict):
         self.load_data()
 
     def save_data(self):
-        with open('data.bin', 'wb') as f:
+        with open(ADDRESSBOOK_DB, 'wb') as f:
             pickle.dump(self.data, f)
 
     def load_data(self):
         try:
-            with open('data.bin', 'rb') as f:
+            with open(ADDRESSBOOK_DB, 'rb') as f:
                 try:
                     data = pickle.load(f)
                     self.data = data
@@ -179,6 +191,7 @@ def greeting(*args):
     return "How can I help you?"
 
 
+
 @input_error
 def to_exit(*args):
     notebook.save_data()
@@ -221,10 +234,10 @@ def days_to_births(*args):
         if v.birthday is None:
             continue
         date_now = datetime.now().date()
-        birthday_date = datetime(year=date_now.year, month=v.birthday.value.month, day=v.birthday.value.day).date()
+        birthday_date = datetime(day=v.birthday.value.day, month=v.birthday.value.month, year=date_now.year).date()
         if date_now > birthday_date:
-            birthday_date = datetime(year=date_now.year + 1, month=v.birthday.value.month,
-                                     day=v.birthday.value.day).date()
+            birthday_date = datetime(day=v.birthday.value.day, month=v.birthday.value.month,
+                                     year=date_now.year + 1).date()
         result = birthday_date - date_now
         if result.days <= num:
             res.append(v)

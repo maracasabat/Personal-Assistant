@@ -52,8 +52,6 @@ class Email(Field):
         self._value = email
 
 
-
-
 class Birthday(Field):
     @Field.value.setter
     def value(self, new_value):
@@ -141,7 +139,6 @@ class AddressBook(UserDict):
         new_value = str(new_value)
         for name, record in self.data.items():
             if name == old_value and name != new_value:
-
                 self.data[new_value] = record
                 self.data.pop(old_value)
                 return print(f"Record {old_value} was updated to {new_value}")
@@ -152,9 +149,7 @@ class AddressBook(UserDict):
                 self.data[name] = new_record
                 return print(f"Record {record} was updated to {new_record}")
 
-
         return print(f"Record {old_value} was not found")
-
 
 
 def input_error(func):
@@ -214,6 +209,29 @@ def show_all(*args):
 
 
 @input_error
+def days_to_births(*args):
+    num = 0
+    try:
+        num = int(args[0])
+    except ValueError:
+        print('Enter integer')
+        return ''
+    res = []
+    for k, v in notebook.items():
+        if v.birthday is None:
+            continue
+        date_now = datetime.now().date()
+        birthday_date = datetime(year=date_now.year, month=v.birthday.value.month, day=v.birthday.value.day).date()
+        if date_now > birthday_date:
+            birthday_date = datetime(year=date_now.year + 1, month=v.birthday.value.month,
+                                     day=v.birthday.value.day).date()
+        result = birthday_date - date_now
+        if result.days <= num:
+            res.append(v)
+    return "\n".join([f"{value.name.value.title()}: {value}" for value in res]) if len(
+        res) > 0 else 'Contacts not found'
+
+
 def find(*args):
     result_str = ''
     for i in notebook.to_find(args):
@@ -226,7 +244,6 @@ def unknown_command(*args):
 
 
 all_commands = {
-
     greeting: ["hello", "hi"],
     add_contact: ["add", "new", "+"],
     #     change_number: ["change", ],
@@ -235,7 +252,8 @@ all_commands = {
     to_exit: ["good bye", "close", "exit", ".", "bye"],
     #     del_number: ["del", "delete", "-"],
     #     del_contact: ["remove", ],
-    #     days_to_births: ["days", "birthday"],
+    days_to_births: ["days", "birthday"],
+    #     find: ["find", "search"],
     find: ["find", "search"],
     to_help: ["help", "?", "h"],
 }
@@ -258,6 +276,7 @@ def main():
 
     while command_handler(command):
         command = input("Write your command: ").casefold().strip()
+
 
 # def main():
 #     while True:

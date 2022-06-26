@@ -1,3 +1,4 @@
+from view import *
 import pickle
 from collections import UserDict
 from datetime import datetime
@@ -16,6 +17,9 @@ class Field:
     @value.setter
     def value(self, value):
         self._value = value
+
+    def __str__(self):
+        return self._value
 
 
 class Name(Field):
@@ -44,8 +48,10 @@ class Email(Field):
         if not isinstance(email, str):
             raise TypeError('Emain must be a string')
         if not re.match(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', email):
-            raise ValueError('Email must be in format')
+            raise ValueError('Email not valid')
         self._value = email
+
+
 
 
 class Birthday(Field):
@@ -70,11 +76,11 @@ class Address(Field):
 
 
 class Record:
-    def __init__(self, name: Name, phone: Phone, adr: Address, email: Email):
+    def __init__(self, name: Name, phone: Phone, adr: Address, email: Email, birthday: Birthday = None):
         self.name = name
         self.address = adr
         self.email = email
-        self.birthday = None
+        self.birthday = birthday
         self.phones = []
         if phone:
             self.add_address(phone)
@@ -88,8 +94,8 @@ class Record:
 
     def __repr__(self):
         if self.birthday:
-            return f'{", ".join([p.value for p in self.phones])} Birthday: {self.birthday.value}\nAddress: {self.address.value}, Email: {self.email.value}'
-        return f'{", ".join([p.value for p in self.phones])}\nAddress: {self.address.value}, Email: {self.email.value}'
+            return f'{", ".join([p.value for p in self.phones])}, Birthday: {self.birthday.value}, Address: {self.address.value}, Email: {self.email.value}\n'
+        return f'{", ".join([p.value for p in self.phones])}, Address: {self.address.value}, Email: {self.email.value}\n'
 
 
 class AddressBook(UserDict):
@@ -122,7 +128,33 @@ class AddressBook(UserDict):
         for k, v in self.data.items():
             v = str(v)
             [result.append(f'{k.title()} {v}') for i in value if i in v]
-        return result
+        return print(f' Found {len(result)} records: \n{", ".join(result)}')
+
+    def delete_record(self, name):
+        if name in self:
+            self.pop(name)
+            return print(f"Record {name} was deleted")
+
+        return print(f"Record {name} was not found")
+
+    def update_record(self, old_value, new_value):
+        new_value = str(new_value)
+        for name, record in self.data.items():
+            if name == old_value and name != new_value:
+
+                self.data[new_value] = record
+                self.data.pop(old_value)
+                return print(f"Record {old_value} was updated to {new_value}")
+
+            if old_value in str(record):
+                list_records = []
+                new_record = str(record).replace(old_value, new_value)
+                self.data[name] = new_record
+                return print(f"Record {record} was updated to {new_record}")
+
+
+        return print(f"Record {old_value} was not found")
+
 
 
 def input_error(func):
@@ -209,22 +241,31 @@ all_commands = {
 }
 
 
-def command_parser(user_input: str):
-    for key, value in all_commands.items():
-        for i in value:
-            if user_input.lower().startswith(i.lower()):
-                return key, user_input[len(i):].strip().split()
-    else:
-        return unknown_command, []
+# def command_parser(user_input: str):
+#     for key, value in all_commands.items():
+#         print(key, value)
+#         for i in value:
+#             if user_input.lower().startswith(i.lower()):
+#                 return key, user_input[len(i):].strip().split()
+#     else:
+#         return unknown_command, []
 
 
 def main():
-    while True:
-        user_input = input('Please enter your command: ')
-        command, parser_data = command_parser(user_input)
-        print(command(*parser_data))
-        if command is to_exit:
-            break
+    print("Hi! Welcome to Personal Assistant Bot")
+    show_menu()
+    command = input("Write your command: ").casefold().strip()
+
+    while command_handler(command):
+        command = input("Write your command: ").casefold().strip()
+
+# def main():
+#     while True:
+#         user_input = input('Please enter your command: ')
+#         command, parser_data = command_parser(user_input)
+#         print(command(*parser_data))
+#         if command is to_exit:
+#             break
 
 
 if __name__ == "__main__":

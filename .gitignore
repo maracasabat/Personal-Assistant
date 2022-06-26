@@ -129,8 +129,7 @@ dmypy.json
 .pyre/
 .idea/
 .idea/inspectionProfiles/Project_Default.xml
-.idea/inspectionProfiles/Project_Default.xml
 .DS_Store
 .idea/Personal-Assistant.iml
 .idea/misc.xml
-
+data.bin

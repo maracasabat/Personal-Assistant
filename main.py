@@ -117,6 +117,13 @@ class AddressBook(UserDict):
         except FileNotFoundError:
             return 'File data is empty'
 
+    def to_find(self, value):
+        result = []
+        for k, v in self.data.items():
+            v = str(v)
+            [result.append(f'{k.title()} {v}') for i in value if i in v]
+        return result
+
 
 def input_error(func):
     def inner(*args, **kwargs):
@@ -136,7 +143,8 @@ def to_help(*args):
     return """help - output command, that you can use to get help
     hello - output greeting message
     add - add new contact: like this: Name, Phone, Address, Email, Birthday
-    show - show all contacts"""
+    show - show all contacts
+    show phone - show number of contact"""
 
 
 @input_error
@@ -162,6 +170,11 @@ def add_contact(*args):
     except IndexError:
         birthday = None
     return f"Contact {rec.name.value} has added successfully."
+
+
+@input_error
+def print_phone(*args):
+    return notebook[args[0]]
 
 
 def show_all(*args):
@@ -190,18 +203,30 @@ def days_to_births(*args):
             res.append(v)
     return "\n".join([f"{value.name.value.title()}: {value}" for value in res]) if len(res) > 0 else 'Contacts not found'
 
+  
+def find(*args):
+    result_str = ''
+    for i in notebook.to_find(args):
+        result_str += f'{i}\n'
+    return result_str[:-1] if result_str else 'Nothing found'
+
+
+def unknown_command(*args):
+    return 'Unknown command! Enter again!'
+
 
 all_commands = {
     greeting: ["hello", "hi"],
     add_contact: ["add", "new", "+"],
     #     change_number: ["change", ],
-    #     print_phone: ["phone", "number"],
+    print_phone: ["phone", "number"],
     show_all: ["show all", "show"],
     to_exit: ["good bye", "close", "exit", ".", "bye"],
     #     del_number: ["del", "delete", "-"],
     #     del_contact: ["remove", ],
     days_to_births: ["days", "birthday"],
     #     find: ["find", "search"],
+    find: ["find", "search"],
     to_help: ["help", "?", "h"],
 }
 
@@ -211,6 +236,8 @@ def command_parser(user_input: str):
         for i in value:
             if user_input.lower().startswith(i.lower()):
                 return key, user_input[len(i):].strip().split()
+    else:
+        return unknown_command, []
 
 
 def main():

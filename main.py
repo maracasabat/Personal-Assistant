@@ -88,7 +88,7 @@ class Record:
 
     def __repr__(self):
         if self.birthday:
-            return f'{", ".join([p.value for p in self.phones])} Birthday: {self.birthday.value}\nAddress: {self.address.value}, Email: {self.email.value}'
+            return f'{", ".join([p.value for p in self.phones])} Birthday: {self.birthday.value.date()}\nAddress: {self.address.value}, Email: {self.email.value}'
         return f'{", ".join([p.value for p in self.phones])}\nAddress: {self.address.value}, Email: {self.email.value}'
 
 
@@ -182,6 +182,28 @@ def show_all(*args):
 
 
 @input_error
+def days_to_births(*args):
+    num = 0
+    try:
+        num = int(args[0])
+    except ValueError:
+        print('Enter integer')
+        return ''
+    res = []
+    for k, v in notebook.items():
+        if v.birthday is None:
+            continue
+        date_now = datetime.now().date()
+        birthday_date = datetime(year=date_now.year, month=v.birthday.value.month, day=v.birthday.value.day).date()
+        if date_now > birthday_date:
+            birthday_date = datetime(year=date_now.year + 1, month=v.birthday.value.month,
+                                     day=v.birthday.value.day).date()
+        result = birthday_date - date_now
+        if result.days <= num:
+            res.append(v)
+    return "\n".join([f"{value.name.value.title()}: {value}" for value in res]) if len(res) > 0 else 'Contacts not found'
+
+  
 def find(*args):
     result_str = ''
     for i in notebook.to_find(args):
@@ -194,7 +216,6 @@ def unknown_command(*args):
 
 
 all_commands = {
-
     greeting: ["hello", "hi"],
     add_contact: ["add", "new", "+"],
     #     change_number: ["change", ],
@@ -203,7 +224,8 @@ all_commands = {
     to_exit: ["good bye", "close", "exit", ".", "bye"],
     #     del_number: ["del", "delete", "-"],
     #     del_contact: ["remove", ],
-    #     days_to_births: ["days", "birthday"],
+    days_to_births: ["days", "birthday"],
+    #     find: ["find", "search"],
     find: ["find", "search"],
     to_help: ["help", "?", "h"],
 }

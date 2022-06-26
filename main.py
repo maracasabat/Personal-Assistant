@@ -62,7 +62,7 @@ class Record:
 
     def __repr__(self):
         if self.birthday:
-            return f'{", ".join([p.value for p in self.phones])} Birthday: {self.birthday.value}\nAddress: {self.address.value}, Email: {self.email.value}'
+            return f'{", ".join([p.value for p in self.phones])} Birthday: {self.birthday.value.date()}\nAddress: {self.address.value}, Email: {self.email.value}'
         return f'{", ".join([p.value for p in self.phones])}\nAddress: {self.address.value}, Email: {self.email.value}'
 
 
@@ -147,13 +147,13 @@ def days_to_births(*args):
     for k, v in notebook.items():
         if v.birthday is None:
             continue
-        date_now = datetime.now()
-        birthday_date = datetime(year=date_now.year, month=v.birthday.value.month, day=v.birthday.value.day)
+        date_now = datetime.now().date()
+        birthday_date = datetime(year=date_now.year, month=v.birthday.value.month, day=v.birthday.value.day).date()
         if date_now > birthday_date:
             birthday_date = datetime(year=date_now.year + 1, month=v.birthday.value.month,
-                                     day=v.birthday.value.day)
+                                     day=v.birthday.value.day).date()
         result = birthday_date - date_now
-        if result.days >= num:
+        if result.days <= num:
             res.append(v)
     return "\n".join([f"{value.name.value.title()}: {value}" for value in res]) if len(res) > 0 else 'Contacts not found'
 

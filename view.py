@@ -1,6 +1,7 @@
 from pick import pick
 from difflib import get_close_matches
 from main import Record, AddressBook, Name, Phone, Address, Email, Birthday
+from styles import show_records
 
 notebook = AddressBook()
 add_commands = ["add", "+", "new"]
@@ -50,7 +51,8 @@ def command_handler(command):
             print(f"Sorry, {e}. Please try again.")
             return True
     if command == "show" or command == 1:
-        print(notebook)
+        # print(notebook)
+        show_records(notebook)
         return True
     if command == "delete" or command == 2:
         name = input("Enter name: ").title().strip()

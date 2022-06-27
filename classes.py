@@ -22,8 +22,7 @@ class Field:
     def value(self, value):
         self._value = value
 
-
- def __str__(self):
+    def __str__(self):
         return self._value
 
 

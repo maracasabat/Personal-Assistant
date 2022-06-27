@@ -2,6 +2,7 @@ from classes import SomeBook, NoteBookRecord, NoteBookText, NoteBookTeg, Name
 
 notebook = SomeBook('notebook_data.bin')
 
+
 def input_error(func):
     def inner(*args, **kwargs):
         try:
@@ -83,8 +84,10 @@ def find(*args):
             found = True
         elif args[0] in v.text.value:
             found = True
-        elif args[0] in v.tegs:
-            found = True
+        else:
+            for teg in v.tegs:
+                if args[0] in teg.value:
+                    found = True
         if found:
             result_str += f'{v}\n'
     return result_str[:-1] if result_str else 'Nothing found'

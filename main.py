@@ -1,6 +1,7 @@
 from view import show_menu, command_handler
 from classes import SomeBook, Record, Name, Phone, Address, Email, Birthday
 from datetime import datetime
+from styles import records, show_records
 
 addressbook = SomeBook('data.bin')
 

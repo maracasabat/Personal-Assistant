@@ -133,3 +133,4 @@ dmypy.json
 .idea/Personal-Assistant.iml
 .idea/misc.xml
 data.bin
+notebook_data.bin

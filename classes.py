@@ -82,6 +82,7 @@ class Address(Field):
             raise ValueError('Address must be between 2 and 20 characters')
         self._value = address
 
+
 class NoteBookText(Field):
     pass
 
@@ -91,13 +92,13 @@ class NoteBookTeg(Field):
 
 
 class NoteBookRecord:
-    def __init__(self, name: Name, text: NoteBookText):
+    def __init__(self, name: Name, text: NoteBookText, *args):
         self.name = name
         self.text = text
         self.tegs = []
 
     def __repr__(self):
-        return f'{self.name.value.title()}: {", ".join([p.value for p in self.tegs])}\nText:{self.text.value}'
+        return f'{self.name.value.title()}, {", ".join([p.value for p in self.tegs])}, {self.text.value}'
 
     def add_teg(self, teg: NoteBookTeg):
         self.tegs.append(teg)
@@ -109,11 +110,11 @@ class NoteBookRecord:
 
 
 class Record:
-    def __init__(self, name: Name, phone: Phone, adr: Address, email: Email):
+    def __init__(self, name: Name, phone: Phone, adr: Address, email: Email, birthday: Birthday = None):
         self.name = name
         self.address = adr
         self.email = email
-        self.birthday = None
+        self.birthday = birthday
         self.phones = []
         if phone:
             self.add_address(phone)
@@ -127,8 +128,8 @@ class Record:
 
     def __repr__(self):
         if self.birthday:
-            return f'{", ".join([p.value for p in self.phones])} Birthday: {self.birthday.value.date()}\nAddress: {self.address.value}, Email: {self.email.value}'
-        return f'{", ".join([p.value for p in self.phones])}\nAddress: {self.address.value}, Email: {self.email.value}'
+            return f'{", ".join([p.value for p in self.phones])}, {self.email.value}, {self.address.value}, {self.birthday.value}'
+        return f'{", ".join([p.value for p in self.phones])}, {self.address.value}, {self.email.value}'
 
 
 class SomeBook(UserDict):
@@ -187,4 +188,3 @@ class SomeBook(UserDict):
                 return print(f"Record {record} was updated to {new_record}")
 
         return print(f"Record {old_value} was not found")
-

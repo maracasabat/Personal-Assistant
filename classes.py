@@ -108,7 +108,6 @@ class NoteBookRecord:
                 return self.tegs.pop(i)
 
 
-
 class Record:
     def __init__(self, name: Name, phone: Phone, adr: Address, email: Email):
         self.name = name

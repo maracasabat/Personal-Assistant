@@ -1,8 +1,9 @@
-
+from view import show_menu, command_handler
 from classes import SomeBook, Record, Name, Phone, Address, Email, Birthday
 from datetime import datetime
 
 addressbook = SomeBook('data.bin')
+
 
 def input_error(func):
     def inner(*args, **kwargs):
@@ -30,7 +31,6 @@ def to_help(*args):
 @input_error
 def greeting(*args):
     return "How can I help you?"
-
 
 
 @input_error

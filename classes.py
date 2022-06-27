@@ -3,6 +3,11 @@ from collections import UserDict
 from datetime import datetime
 import re
 
+PHONE_REGEX = re.compile(r"^\+?(\d{2})?\(?(0\d{2})\)?(\d{7}$)")
+EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+NAME_REGEX = re.compile(r'^[a-zA-Zа-яА-Я]{2,20}$')
+ADDRESS_REGEX = re.compile(r'^[a-zA-Zа-яА-Я0-9,. ]{2,20}$')
+
 
 class Field:
     def __init__(self, value) -> None:
@@ -18,12 +23,16 @@ class Field:
         self._value = value
 
 
+ def __str__(self):
+        return self._value
+
+
 class Name(Field):
     @Field.value.setter
     def value(self, name: str):
         if not isinstance(name, str):
             raise TypeError("Name must be a string")
-        if not re.match(r'^[a-zA-Zа-яА-Я]{2,20}$', name):
+        if not re.match(NAME_REGEX, name):
             raise ValueError('Name must be between 2 and 20 characters')
         self._value = name
 
@@ -33,18 +42,24 @@ class Phone(Field):
     def value(self, phone: str):
         if not isinstance(phone, str):
             raise TypeError('Phone must be a string')
-        if not re.match(r'^\+380\d{3}\d{2}\d{2}\d{2}$', phone):
-            raise ValueError('Phone must be in format +380XXXXXXXXX')
-        self._value = phone
+        if bool(re.match(PHONE_REGEX, phone)):
+            if len(phone) == 12:
+                self._value = f'+{phone}'
+            elif len(phone) == 10:
+                self._value = f'+38{phone}'
+            elif len(phone) == 13:
+                self._value = phone
+        else:
+            raise ValueError(f"Phone must be in format +380XXXXXXXXX/380XXXXXXXXX/0XXXXXXXXX")
 
 
 class Email(Field):
     @Field.value.setter
     def value(self, email: str):
         if not isinstance(email, str):
-            raise TypeError('Emain must be a string')
-        if not re.match(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$', email):
-            raise ValueError('Email must be in format')
+            raise TypeError('Email must be a string')
+        if not re.match(EMAIL_REGEX, email):
+            raise ValueError('Email not valid')
         self._value = email
 
 
@@ -56,7 +71,7 @@ class Birthday(Field):
             date = datetime(day=int(d), month=int(m), year=int(y))
             self._value = date
         except ValueError:
-            print('Enter date like 02-05-2022')
+            print('Enter date like dd-mm-yyyy')
 
 
 class Address(Field):
@@ -64,10 +79,9 @@ class Address(Field):
     def value(self, address: str):
         if not isinstance(address, str):
             raise TypeError('Address must be a string')
-        if not re.match(r'^[a-zA-Zа-яА-Я0-9,. ]{2,20}$', address):
+        if not re.match(ADDRESS_REGEX, address):
             raise ValueError('Address must be between 2 and 20 characters')
         self._value = address
-
 
 class NoteBookText(Field):
     pass
@@ -152,4 +166,27 @@ class SomeBook(UserDict):
             v = str(v)
             [result.append(f'{k.title()} {v}') for i in value if i in v]
         return result
+
+    def delete_record(self, name):
+        if name in self:
+            self.pop(name)
+            return print(f"Record {name} was deleted")
+
+        return print(f"Record {name} was not found")
+
+    def update_record(self, old_value, new_value):
+        new_value = str(new_value)
+        for name, record in self.data.items():
+            if name == old_value and name != new_value:
+                self.data[new_value] = record
+                self.data.pop(old_value)
+                return print(f"Record {old_value} was updated to {new_value}")
+
+            if old_value in str(record):
+                list_records = []
+                new_record = str(record).replace(old_value, new_value)
+                self.data[name] = new_record
+                return print(f"Record {record} was updated to {new_record}")
+
+        return print(f"Record {old_value} was not found")
 

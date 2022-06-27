@@ -1,9 +1,10 @@
 from pick import pick
 from difflib import get_close_matches
-from main import Record, AddressBook, Name, Phone, Address, Email, Birthday
 from styles import show_records
+from classes import Record, SomeBook, Name, Phone, Address, Email, Birthday
 
-notebook = AddressBook()
+
+addressbook = SomeBook('date.bin')
 add_commands = ["add", "+", "new"]
 exit_commands = ["exit", "bye", "goodbye", "close"]
 update_commands = ["update", "change", "edit"]
@@ -43,57 +44,63 @@ def command_handler(command):
             address = input("Enter address: ").strip()
             email = input("Enter email: ").strip()
             birthday = input("Enter birthday dd-mm-yyyy: ").strip()
-            record = Record(Name(name), Phone(phone_number), Address(address), Email(email), Birthday(birthday))
-            notebook.add_record(record)
-            notebook.save_data()
+            record = Record(Name(name), Phone(phone_number), Address(address), Email(email))
+            record.add_birthday(Birthday(birthday))
+            addressbook.add_record(record)
+            addressbook.save_data()
             return True
         except ValueError as e:
             print(f"Sorry, {e}. Please try again.")
             return True
     if command == "show" or command == 1:
-        # print(notebook)
-        show_records(notebook)
+       
+        print("\n".join([f"{k.title()}: {v}" for k, v in addressbook.items()]) if len(
+            addressbook) > 0 else 'Contacts are empty')
+
+        # show_records(addressbook)
+        # print(addressbook)
+
         return True
     if command == "delete" or command == 2:
         name = input("Enter name: ").title().strip()
-        notebook.delete_record(name)
-        notebook.save_data()
+        addressbook.delete_record(name)
+        addressbook.save_data()
         return True
     if command == "find" or command == 3:
         value = input("Enter name/phone/birthday for find: ")
-        notebook.to_find(value)
+        addressbook.to_find(value)
         return True
     if command in update_commands or command == 4:
         updated_position = show_edit_submenu()
         if updated_position == 0:
             old_value = input("Enter old name: ").title()
             new_value = input("Enter new name: ").title()
-            notebook.update_record(old_value, new_value)
-            notebook.save_data()
+            addressbook.update_record(old_value, new_value)
+            addressbook.save_data()
             return True
         elif updated_position == 1:
             old_value = input("Enter old phone-number: ")
             new_value = input("Enter new phone-number: ")
-            notebook.update_record(old_value, Phone(new_value))
+            addressbook.update_record(old_value, Phone(new_value))
             return True
         elif updated_position == 2:
             old_value = input("Enter old address: ").strip()
             new_value = input("Enter new address: ").strip()
-            notebook.update_record(old_value, Address(new_value))
-            notebook.save_data()
+            addressbook.update_record(old_value, Address(new_value))
+            addressbook.save_data()
             return True
         elif updated_position == 3:
             old_value = input("Enter old email: ").strip()
             new_value = input("Enter new email: ").strip()
-            notebook.update_record(old_value, Email(new_value))
+            addressbook.update_record(old_value, Email(new_value))
             return True
         elif updated_position == 4:
             old_value = input("Enter old birthday: ")
             new_value = input("Enter new birthday: ")
-            notebook.update_record(old_value, new_value)
+            addressbook.update_record(old_value, new_value)
             return True
         elif updated_position == 5:
-            notebook.save_data()
+            addressbook.save_data()
             return True
         else:
             print("Wrong command")
@@ -104,7 +111,7 @@ def command_handler(command):
         return True
     if command in exit_commands or command == 7:
         print("Goodbye!")
-        notebook.save_data()
+        addressbook.save_data()
         return False
     else:
         print("Unknown command")
@@ -131,6 +138,7 @@ menu_options = ["AddressBook", "NoteBook", "Help", "Exit"]
 
 
 def show_menu():
+
     option, index = pick(menu_options, menu_title, indicator="=>")
     print(f"You have chosen a command: {option}.\nLet's continue.\n{'=' * 60}")
 
@@ -140,14 +148,14 @@ def show_menu():
 def menu_switcher(index):
     if index == 0:
         print("welcome to Addressbook")
-        notebook.load_data()
+        addressbook.load_data()
         command = input("Write your command: ").casefold().strip()
         while command_handler(command):
             command = input("Write your command: ").casefold().strip()
 
     if index == 1:
         print("Welcome to Notebook")
-        notebook.load_data()
+        addressbook.load_data()
         command = input("Write your command: ").casefold().strip()
         while command_handler(command):
             command = input("Write your command: ").casefold().strip()
@@ -156,4 +164,4 @@ def menu_switcher(index):
 
     if index == 3:
         print("See you later!")
-        notebook.save_data()
+        addressbook.save_data()

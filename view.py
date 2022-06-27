@@ -4,7 +4,7 @@ from notebook import notebook, add_note, find
 from styles import show_records, show_notes, show_print
 from classes import Record, SomeBook, Name, Phone, Address, Email, Birthday, NoteBookRecord, NoteBookText, NoteBookTeg
 
-addressbook = SomeBook('date.bin')
+addressbook = SomeBook('data.bin')
 add_commands = ["add", "+", "new"]
 exit_commands = ["exit", "bye", "goodbye", "close"]
 update_commands = ["update", "change", "edit"]

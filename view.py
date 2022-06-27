@@ -2,7 +2,7 @@ from pick import pick
 from difflib import get_close_matches
 from classes import Record, SomeBook, Name, Phone, Address, Email, Birthday
 
-addressbook = SomeBook('date.bin')
+addressbook = SomeBook('data.bin')
 add_commands = ["add", "+", "new"]
 exit_commands = ["exit", "bye", "goodbye", "close"]
 update_commands = ["update", "change", "edit"]

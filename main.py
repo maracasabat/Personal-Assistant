@@ -1,9 +1,8 @@
+
 from classes import SomeBook, Record, Name, Phone, Address, Email, Birthday
 from datetime import datetime
 
-
 addressbook = SomeBook('data.bin')
-
 
 def input_error(func):
     def inner(*args, **kwargs):
@@ -31,6 +30,7 @@ def to_help(*args):
 @input_error
 def greeting(*args):
     return "How can I help you?"
+
 
 
 @input_error
@@ -73,16 +73,17 @@ def days_to_births(*args):
         if v.birthday is None:
             continue
         date_now = datetime.now().date()
-        birthday_date = datetime(year=date_now.year, month=v.birthday.value.month, day=v.birthday.value.day).date()
+        birthday_date = datetime(day=v.birthday.value.day, month=v.birthday.value.month, year=date_now.year).date()
         if date_now > birthday_date:
-            birthday_date = datetime(year=date_now.year + 1, month=v.birthday.value.month,
-                                     day=v.birthday.value.day).date()
+            birthday_date = datetime(day=v.birthday.value.day, month=v.birthday.value.month,
+                                     year=date_now.year + 1).date()
         result = birthday_date - date_now
         if result.days <= num:
             res.append(v)
-    return "\n".join([f"{value.name.value.title()}: {value}" for value in res]) if len(res) > 0 else 'Contacts not found'
+    return "\n".join([f"{value.name.value.title()}: {value}" for value in res]) if len(
+        res) > 0 else 'Contacts not found'
 
-  
+
 def find(*args):
     result_str = ''
     for i in addressbook.to_find(args):
@@ -110,22 +111,32 @@ all_commands = {
 }
 
 
-def command_parser(user_input: str):
-    for key, value in all_commands.items():
-        for i in value:
-            if user_input.lower().startswith(i.lower()):
-                return key, user_input[len(i):].strip().split()
-    else:
-        return unknown_command, []
+# def command_parser(user_input: str):
+#     for key, value in all_commands.items():
+#         print(key, value)
+#         for i in value:
+#             if user_input.lower().startswith(i.lower()):
+#                 return key, user_input[len(i):].strip().split()
+#     else:
+#         return unknown_command, []
 
 
 def main():
-    while True:
-        user_input = input('Please enter your command: ')
-        command, parser_data = command_parser(user_input)
-        print(command(*parser_data))
-        if command is to_exit:
-            break
+    print("Hi! Welcome to Personal Assistant Bot")
+    show_menu()
+    command = input("Write your command: ").casefold().strip()
+
+    while command_handler(command):
+        command = input("Write your command: ").casefold().strip()
+
+
+# def main():
+#     while True:
+#         user_input = input('Please enter your command: ')
+#         command, parser_data = command_parser(user_input)
+#         print(command(*parser_data))
+#         if command is to_exit:
+#             break
 
 
 if __name__ == "__main__":

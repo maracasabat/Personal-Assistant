@@ -2,7 +2,7 @@ from pick import pick
 import os
 from difflib import get_close_matches
 from Personal_assistant.helpers import days_to_birthday
-# from Personal_assistant.sorter import start
+from Personal_assistant.sorter import main, start
 from styles import show_records, show_notes, show_print, bcolors, pretty_title
 from classes import Record, SomeBook, Name, Phone, Address, Email, Birthday, NoteBookRecord, NoteBookText, NoteBookTeg
 
@@ -40,6 +40,33 @@ help_submenu_options = [f"{cmd:<30} -  {desc}" for cmd, desc in
                         zip(['Contacts', 'Notes'], ['Addressbook Help Commands', 'Notes Help Commands'])]
 help_submenu_title = f"Command name and description. Select command.\n{'=' * 60}"
 
+sorter_submenu_options = [f"{cmd:<30} -  {desc}" for cmd, desc in
+                          zip(['Option 1', 'Option 2', 'Option 3'],
+                              ['Description option 1', 'Description option 2', 'Description option 3'])]
+sorter_submenu_title = f"Command name and description. Select command.\n{'=' * 60}"
+
+
+# ================================ Menu Sorter ======================================================
+def show_sorter_submenu():
+    option, index = pick(sorter_submenu_options, sorter_submenu_title, indicator="=>")
+    option = option.split(" - ")[1]
+    print(f"You have chosen a command: {option}.\nLet's continue.\n{'=' * 60}")
+
+    return sorter_submenu_switcher(index)
+
+
+def sorter_submenu_switcher(index):
+    return sorter_handler(index)
+
+
+def sorter_handler(index):
+    if index == 0:
+        print("Здесь функция которая обрабатывает Option 1")
+    if index == 1:
+        print("Здесь функция которая обрабатывает Option 2")
+    if index == 2:
+        print("Здесь функция которая обрабатывает Option 3")
+
 
 # ============================= Main Menu =================+++++++=================================
 def show_menu():
@@ -72,9 +99,9 @@ def menu_switcher(index):
     if index == 2:
         show_help_submenu()
     if index == 3:
+        os.system('clear')
         pretty_title(f"Welcome to Folder Sorter.\n{'=' * 60}")
-        path = input("Enter path to folder: ")
-        # start()  # start folder sorter
+        show_sorter_submenu()
     if index == 4:
         print(f"{bcolors.HEADER}See you later!{bcolors.ENDC}")
         addressbook.save_data()

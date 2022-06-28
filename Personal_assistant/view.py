@@ -203,11 +203,13 @@ def notes_handler(command):
             found = False
             if value.title() in k.title():
                 found = True
-            elif v.text.value.find(value) != -1:
+            text = v.text.value.upper()
+            if text.find(value.upper()) != -1:
                 found = True
             else:
                 for teg in v.tegs:
-                    if teg.value.find(value) != -1:
+                    tg = teg.value.upper()
+                    if tg.find(value.upper()) != -1:
                         found = True
             if found:
                 result_str += f'{v}\n'

@@ -16,5 +16,5 @@ setup(
     ],
     packages=find_namespace_packages(),
     entry_points={'console_scripts': [
-        'bot=Personal_assistant.main:start']}
+        'bot=Personal_assistant.main:main']}
 )

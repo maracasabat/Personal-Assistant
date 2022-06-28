@@ -1,6 +1,6 @@
 from classes import SomeBook, NoteBookRecord, NoteBookText, NoteBookTeg, Name
 
-notebook = SomeBook('notebook_data.bin')
+notebook = SomeBook('../notebook_data.bin')
 
 
 def input_error(func):

@@ -188,7 +188,9 @@ def notes_handler(command):
             print(f"Sorry, {e}. Please try again.")
             return True
     if command == "show" or command == 1:
-        show_notes(notebook)
+        # show_notes(notebook)
+        print("\n".join([f"{v}" for k, v in notebook.items()]) if len(
+        notebook) > 0 else 'Contacts are empty')
         return True
     if command == "delete" or command == 2:
         title = input("Enter title: ").title().strip()

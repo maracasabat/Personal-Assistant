@@ -1,4 +1,4 @@
-from classes import SomeBook, NoteBookRecord, NoteBookText, NoteBookTeg, Name
+from Personal_assistant.classes import SomeBook, NoteBookRecord, NoteBookText, NoteBookTeg, Name
 
 notebook = SomeBook('notebook_data.bin')
 

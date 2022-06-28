@@ -1,4 +1,4 @@
-from classes import SomeBook, Record, Name, Phone, Address, Email, Birthday
+from Personal_assistant.classes import SomeBook, Record, Name, Phone, Address, Email, Birthday
 from datetime import datetime
 
 addressbook = SomeBook('data.bin')

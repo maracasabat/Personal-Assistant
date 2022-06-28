@@ -1,8 +1,9 @@
 from pick import pick
 from difflib import get_close_matches
-from notebook import notebook, add_note, find
-from styles import show_records, show_notes, show_print
-from classes import Record, SomeBook, Name, Phone, Address, Email, Birthday, NoteBookRecord, NoteBookText, NoteBookTeg
+from Personal_assistant.helpers import days_to_birthday
+from Personal_assistant.notebook import notebook, find
+from Personal_assistant.styles import show_records, show_notes, show_print, bcolors, pretty_title
+from Personal_assistant.classes import Record, SomeBook, Name, Phone, Address, Email, Birthday
 
 addressbook = SomeBook('data.bin')
 add_commands = ["add", "+", "new"]
@@ -27,21 +28,21 @@ submenu_title = f"Command name and description. Select command.\n{'=' * 60}"
 
 def show_menu():
     option, index = pick(menu_options, menu_title, indicator="=>")
-    print(f"You have chosen a command: {option}.\nLet's continue.\n{'=' * 60}")
+    print(f"{bcolors.OKGREEN}You have chosen a command: {bcolors.HEADER}{option}{bcolors.ENDC}.{bcolors.OKGREEN}\nLet's continue.\n{'=' * 60}{bcolors.ENDC}")
 
     return menu_switcher(index)
 
 
 def menu_switcher(index):
     if index == 0:
-        print("welcome to Addressbook")
+        pretty_title(f"Welcome to Addressbook.\n{'=' * 60}")
         addressbook.load_data()
         command = input("Write your command: ").casefold().strip()
         while command_handler(command):
             command = input("Write your command: ").casefold().strip()
 
     if index == 1:
-        print("Welcome to Notebook")
+        pretty_title(f"Welcome to Notebook.\n{'=' * 60}")
         notebook.load_data()
         command = input("Write your command: ").casefold().strip()
         while notes_handler(command):
@@ -49,9 +50,9 @@ def menu_switcher(index):
     if index == 2:
         show_submenu()
     if index == 3:
-        print("Welcome to Folder Sorter")  # запускаем функцию сортировки
+        pretty_title(f"Welcome to Folder Sorter.\n{'=' * 60}")
     if index == 4:
-        print("See you later!")
+        print(f"{bcolors.HEADER}See you later!{bcolors.ENDC}")
         addressbook.save_data()
 
 

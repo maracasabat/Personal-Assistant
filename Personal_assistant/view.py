@@ -124,7 +124,7 @@ def notes_submenu_switcher(index):
     return notes_handler(index)
 
 
-# ============================= Contacts and Notes  help SubMenu ==================================================
+# ============================= Contacts and Notes  HELP SubMenu ==================================================
 
 def show_help_submenu():
     option, index = pick(help_submenu_options, help_submenu_title, indicator="=>")

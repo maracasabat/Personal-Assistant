@@ -1,6 +1,5 @@
 from classes import SomeBook, Record, Name, Phone, Address, Email, Birthday
 from datetime import datetime
-from classes import SomeBook
 
 addressbook = SomeBook('data.bin')
 

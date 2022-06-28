@@ -1,6 +1,5 @@
 from pick import pick
 from difflib import get_close_matches
-
 from notebook import notebook, add_note, find
 from styles import show_records, show_notes, show_print
 from classes import Record, SomeBook, Name, Phone, Address, Email, Birthday, NoteBookRecord, NoteBookText, NoteBookTeg

@@ -159,12 +159,11 @@ class SomeBook(UserDict):
         except FileNotFoundError:
             return 'File data is empty'
 
-    def to_find(self, value):
-        result = []
+    def to_find(self, name):
         for k, v in self.data.items():
-            v = str(v)
-            [result.append(f'{k.title()} {v}') for i in value if i in v]
-        return result
+            if k.title() == name.title():
+                return print(f'{k.title()} {v}')
+        return print('Not found')
 
     def delete_record(self, name):
         if name in self:

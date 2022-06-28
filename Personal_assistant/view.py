@@ -1,11 +1,12 @@
 from pick import pick
 from difflib import get_close_matches
 from Personal_assistant.helpers import days_to_birthday
-from Personal_assistant.notebook import notebook, find
-from Personal_assistant.styles import show_records, show_notes, show_print, bcolors, pretty_title
-from Personal_assistant.classes import Record, SomeBook, Name, Phone, Address, Email, Birthday
+from notebook import notebook, find
+from styles import show_records, show_notes, show_print, bcolors, pretty_title
+from classes import Record, SomeBook, Name, Phone, Address, Email, Birthday, NoteBookRecord, NoteBookText, NoteBookTeg
 
 addressbook = SomeBook('data.bin')
+notebook = SomeBook('notebook_data.bin')
 add_commands = ["add", "+", "new"]
 exit_commands = ["exit", "bye", "goodbye", "close"]
 days_to_birthday_commands = ["days to", "birthday", "period"]
@@ -28,7 +29,8 @@ submenu_title = f"Command name and description. Select command.\n{'=' * 60}"
 
 def show_menu():
     option, index = pick(menu_options, menu_title, indicator="=>")
-    print(f"{bcolors.OKGREEN}You have chosen a command: {bcolors.HEADER}{option}{bcolors.ENDC}.{bcolors.OKGREEN}\nLet's continue.\n{'=' * 60}{bcolors.ENDC}")
+    print(
+        f"{bcolors.OKGREEN}You have chosen a command: {bcolors.HEADER}{option}{bcolors.ENDC}.{bcolors.OKGREEN}\nLet's continue.\n{'=' * 60}{bcolors.ENDC}")
 
     return menu_switcher(index)
 
@@ -54,6 +56,7 @@ def menu_switcher(index):
     if index == 4:
         print(f"{bcolors.HEADER}See you later!{bcolors.ENDC}")
         addressbook.save_data()
+        notebook.save_data()
 
 
 def show_submenu():
@@ -177,47 +180,83 @@ def notes_handler(command):
     if command == "add" or command == 0:
         try:
             title = input("Enter title: ").title().strip()
-            text = input("Enter text: ").title().strip()
-            teg = input("Enter tag: ").title().strip()
+            text = input("Enter text: ").strip()
+            teg = input("Enter tag like teg1, teg2: ").strip()
             show_print([title, text, teg])
-            # ========================= не работает сохранение в файл
-            # note = NoteBookRecord(title, NoteBookText(text), NoteBookTeg(teg))
-            # add_note(title, text, teg)
-            # notebook.save_data()
+            note = NoteBookRecord(Name(title), NoteBookText(text))
+            tegs_list = teg.split(',')
+            for tg in tegs_list:
+                note.add_teg(NoteBookTeg(tg.strip()))
+            notebook.add_record(note)
+            notebook.save_data()
             return True
         except ValueError as e:
             print(f"Sorry, {e}. Please try again.")
             return True
     if command == "show" or command == 1:
-        show_notes(notebook)
+        # show_notes(notebook)
+        print("\n".join([f"{v}" for k, v in notebook.items()]) if len(
+            notebook) > 0 else 'Contacts are empty')
         return True
     if command == "delete" or command == 2:
         title = input("Enter title: ").title().strip()
-        notebook.del_note(title)
+        notebook.pop(title)
         notebook.save_data()
         return True
     if command == "find" or command == 3:
         value = input("Enter value for find: ")
-        find(value)
+        result_str = ''
+        for k, v in notebook.items():
+            found = False
+            if value.title() in k.title():
+                found = True
+            text = v.text.value.upper()
+            if text.find(value.upper()) != -1:
+                found = True
+            else:
+                for teg in v.tegs:
+                    tg = teg.value.upper()
+                    if tg.find(value.upper()) != -1:
+                        found = True
+            if found:
+                result_str += f'{v}\n'
+        print(result_str if result_str else 'Nothing found')
         return True
     if command in update_commands or command == 4:
         updated_position = show_edit_note_submenu()
         if updated_position == 0:
             old_title = input("Enter old title: ").title().strip()
             new_title = input("Enter new title: ").title().strip()
-            notebook.update_record(old_title, new_title)
+            new_value = str(new_title)
+            for name, record in notebook.data.items():
+                if name == old_title and name != new_value:
+                    notebook[new_value] = record
+                    notebook.pop(old_title)
+                    return print(f"Record {old_title} was updated to {new_value}")
             notebook.save_data()
             return True
         if updated_position == 1:
-            old_text = input("Enter old text: ").title().strip()
-            new_text = input("Enter new text: ").title().strip()
-            notebook.update_record(old_text, new_text)
+            name = input("Enter name: ").title().strip()
+            new_text = input("Enter new text: ").strip()
+            note = notebook.get(name, -1)
+            if note != -1:
+                note.text = NoteBookText(new_text)
             notebook.save_data()
             return True
         if updated_position == 2:
-            old_teg = input("Enter old tag: ").title().strip()
-            new_teg = input("Enter new tag: ").title().strip()
-            notebook.update_record(old_teg, new_teg)
+            name = input("Enter name: ").title().strip()
+            new_teg = input("Enter new tag: ").strip()
+            note = notebook.get(name, -1)
+            if note != -1:
+                note.add_teg(NoteBookTeg(new_teg))
+            notebook.save_data()
+            return True
+        if updated_position == 3:
+            name = input("Enter name: ").title().strip()
+            new_teg = input("Enter del tag: ").strip()
+            note = notebook.get(name, -1)
+            if note != -1:
+                note.del_teg(new_teg)
             notebook.save_data()
             return True
     if command in back_to_menu_commands or command == 5:
@@ -235,7 +274,7 @@ def notes_handler(command):
 
 
 def show_edit_note_submenu():
-    edit_options = ["Note title", "Note text", "Note tag", "Back"]
+    edit_options = ["Note title", "Note text", "Add note tag", "Del note tag", "Back"]
     option, index = pick(edit_options, f"Choose a field to update:\n{'=' * 60}", indicator="=>")
     print(f"You have chosen a command: {option}.\nLet's continue.\n{'=' * 60}")
     return index

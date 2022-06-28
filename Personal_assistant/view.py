@@ -228,11 +228,13 @@ def notes_handler(command):
             old_title = input("Enter old title: ").title().strip()
             new_title = input("Enter new title: ").title().strip()
             new_value = str(new_title)
-            for name, record in notebook.items():
-                if name.title() == old_title.title() and name != new_value:
-                    notebook[new_value.title()] = record
+            for name, record in notebook.data.items():
+                if name == old_title:
+                    record.name.value = new_value
                     notebook.pop(old_title)
-                    return print(f"Record {old_title} was updated to {new_value}")
+                    notebook[new_value] = record
+                    print(f"Record {old_title} was updated to {new_value}")
+                    return True
             notebook.save_data()
             return True
         if updated_position == 1:
@@ -241,6 +243,8 @@ def notes_handler(command):
             note = notebook.get(name, -1)
             if note != -1:
                 note.text = NoteBookText(new_text)
+            else:
+                print(f'Note title {name} is not found')
             notebook.save_data()
             return True
         if updated_position == 2:

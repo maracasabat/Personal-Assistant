@@ -105,7 +105,7 @@ class NoteBookRecord:
 
     def del_teg(self, teg: str):
         for i, tg in enumerate(self.tegs):
-            if tg.value == teg:
+            if tg.value.upper() == teg.upper():
                 return self.tegs.pop(i)
 
 

@@ -230,7 +230,7 @@ def notes_handler(command):
             return True
         if updated_position == 1:
             name = input("Enter name: ").title().strip()
-            new_text = input("Enter new text: ").title().strip()
+            new_text = input("Enter new text: ").strip()
             note = notebook.get(name, -1)
             if note != -1:
                 note.text = NoteBookText(new_text)
@@ -238,7 +238,7 @@ def notes_handler(command):
             return True
         if updated_position == 2:
             name = input("Enter name: ").title().strip()
-            new_teg = input("Enter new tag: ").title().strip()
+            new_teg = input("Enter new tag: ").strip()
             note = notebook.get(name, -1)
             if note != -1:
                 note.add_teg(NoteBookTeg(new_teg))
@@ -246,10 +246,10 @@ def notes_handler(command):
             return True
         if updated_position == 3:
             name = input("Enter name: ").title().strip()
-            new_teg = input("Enter del tag: ").title().strip()
+            new_teg = input("Enter del tag: ").strip()
             note = notebook.get(name, -1)
             if note != -1:
-                note.add_teg(new_teg)
+                note.del_teg(new_teg)
             notebook.save_data()
             return True
     if command in back_to_menu_commands or command == 5:

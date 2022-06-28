@@ -237,7 +237,7 @@ def notes_handler(command):
             if note != -1:
                 note.text = NoteBookText(new_text)
             else:
-                print(f'Note title {name} is nit foundj')
+                print(f'Note title {name} is nit found')
             notebook.save_data()
             return True
         if updated_position == 2:

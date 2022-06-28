@@ -1,4 +1,4 @@
-from view import show_menu, command_handler
+from view import show_menu, contacts_handler
 from classes import SomeBook, Record, Name, Phone, Address, Email, Birthday
 from datetime import datetime
 from styles import records, show_records
@@ -123,12 +123,12 @@ from styles import records, show_records
 
 
 def main():
-    print("Hi! Welcome to Personal Assistant Bot")
+    # print("Hi! Welcome to Personal Assistant Bot")
     show_menu()
-    command = input("Write your command: ").casefold().strip()
-
-    while command_handler(command):
-        command = input("Write your command: ").casefold().strip()
+    # command = input("Write your command: ").casefold().strip()
+    #
+    # while contacts_handler(command):
+    #     command = input("Write your command: ").casefold().strip()
 
 
 # def main():

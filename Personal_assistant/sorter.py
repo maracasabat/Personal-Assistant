@@ -23,7 +23,7 @@ def handle_documents(filename: Path, target_folder: Path):
 def handle_archives(filename: Path, target_folder: Path):
     target_folder.mkdir(exist_ok=True, parents=True)
     folder_for_file = target_folder / \
-        normalize(filename.name.replace('filename.suffix', ''))
+                      normalize(filename.name.replace('filename.suffix', ''))
     folder_for_file.mkdir(exist_ok=True, parents=True)
     try:
         shutil.unpack_archive(str(filename.resolve()),
@@ -102,7 +102,6 @@ def start():
         folder_for_scan = Path(sys.argv[1])
         print(f'Start in folder {folder_for_scan.resolve()}')
         main(folder_for_scan.resolve())
-
 
 # if __name__ == '__main__':
 #     if sys.argv[1]:

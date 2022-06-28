@@ -1,6 +1,5 @@
 from pick import pick
 from difflib import get_close_matches
-from notebook import notebook, add_note, find
 from styles import show_records, show_notes, show_print
 from classes import Record, SomeBook, Name, Phone, Address, Email, Birthday, NoteBookRecord, NoteBookText, NoteBookTeg
 
@@ -174,8 +173,8 @@ def notes_handler(command):
     if command == "add" or command == 0:
         try:
             title = input("Enter title: ").title().strip()
-            text = input("Enter text: ").title().strip()
-            teg = input("Enter tag like teg1, teg2: ").title().strip()
+            text = input("Enter text: ").strip()
+            teg = input("Enter tag like teg1, teg2: ").strip()
             show_print([title, text, teg])
             note = NoteBookRecord(Name(title), NoteBookText(text))
             tegs_list = teg.split(',')
@@ -202,9 +201,9 @@ def notes_handler(command):
         result_str = ''
         for k, v in notebook.items():
             found = False
-            if value in k:
+            if value.title() in k.title():
                 found = True
-            elif value in v.text.value:
+            elif v.text.value.find(value) != -1:
                 found = True
             else:
                 for teg in v.tegs:

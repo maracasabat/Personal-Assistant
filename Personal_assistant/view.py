@@ -102,6 +102,9 @@ def menu_switcher(index):
         os.system('clear')
         pretty_title(f"Welcome to Folder Sorter.\n{'=' * 60}")
         show_sorter_submenu()
+        command = input("Write your command: ").casefold().strip()
+        while sorter_handler(command):
+            command = input("Write your command: ").casefold().strip()
     if index == 4:
         print(f"{bcolors.HEADER}See you later!{bcolors.ENDC}")
         addressbook.save_data()

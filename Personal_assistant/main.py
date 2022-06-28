@@ -125,10 +125,10 @@ all_commands = {
 def main():
     print("Hi! Welcome to Personal Assistant Bot")
     show_menu()
-    command = input("Write your command: ").casefold().strip()
+    # command = input("Write your command: ").casefold().strip()
 
-    while command_handler(command):
-        command = input("Write your command: ").casefold().strip()
+    # while command_handler(command):
+    #     command = input("Write your command: ").casefold().strip()
 
 
 # def main():

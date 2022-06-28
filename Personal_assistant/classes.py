@@ -27,13 +27,14 @@ class Field:
 
 
 class Name(Field):
-    @Field.value.setter
-    def value(self, name: str):
-        if not isinstance(name, str):
-            raise TypeError("Name must be a string")
-        if not re.match(NAME_REGEX, name):
-            raise ValueError('Name must be between 2 and 20 characters')
-        self._value = name
+    # @Field.value.setter
+    # def value(self, name: str):
+    #     if not isinstance(name, str):
+    #         raise TypeError("Name must be a string")
+    #     if not re.match(NAME_REGEX, name):
+    #         raise ValueError('Name must be between 2 and 20 characters')
+    #     self._value = name
+    pass
 
 
 class Phone(Field):
@@ -68,7 +69,7 @@ class Birthday(Field):
         try:
             d, m, y = new_value.split('-')
             date = datetime(day=int(d), month=int(m), year=int(y))
-            self._value = date
+            self._value = date.date()
         except ValueError:
             print('Enter date like dd-mm-yyyy')
 

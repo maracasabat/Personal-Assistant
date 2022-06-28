@@ -1,5 +1,6 @@
 from pick import pick
 from difflib import get_close_matches
+
 from notebook import notebook, add_note, find
 from styles import show_records, show_notes, show_print
 from classes import Record, SomeBook, Name, Phone, Address, Email, Birthday, NoteBookRecord, NoteBookText, NoteBookTeg
@@ -7,21 +8,22 @@ from classes import Record, SomeBook, Name, Phone, Address, Email, Birthday, Not
 addressbook = SomeBook('data.bin')
 add_commands = ["add", "+", "new"]
 exit_commands = ["exit", "bye", "goodbye", "close"]
+days_to_birthday_commands = ["days to", "birthday", "period"]
 update_commands = ["update", "change", "edit"]
 back_to_menu_commands = ["menu", "quit", "back to menu", "back"]
 
-commands = [f'{", ".join(add_commands)}', "show", "delete", "find", f'{", ".join(update_commands)}', "menu",
-            "help", f'{", ".join(exit_commands)}']
-description = ['Add contact', 'Show contacts', 'Delete Contact', 'Find Contact', 'Update Contact', 'Back to Menu',
-               'Help', 'Exit Commands']
+commands = [f'{", ".join(add_commands)}', "show", "delete", "find", f'{", ".join(days_to_birthday_commands)}',
+            f'{", ".join(update_commands)}', "menu", "help", f'{", ".join(exit_commands)}']
+description = ['Add contact', 'Show contacts', 'Delete contact', 'Find contact', 'Show contacts birthday',
+               'Update contact', 'Back to Menu', 'Help', 'Exit commands']
 
-all_commands = commands + add_commands + exit_commands + update_commands + back_to_menu_commands
+all_commands = commands + add_commands + exit_commands + update_commands + back_to_menu_commands + days_to_birthday_commands
 
 menu_title = f"Hi! Welcome to personal assistant bot!\nSelect menu option please.\n{'=' * 60}".upper()
 menu_options = ["AddressBook", "NoteBook", "Help", "Folder Sorter ", "Exit"]
 
-submenu_options = [f"{cmd:<20} -  {desc}" for cmd, desc in zip(commands, description)]
-submenu_title = f"Command name and description. Select command.\n{'=' * 46}"
+submenu_options = [f"{cmd:<30} -  {desc}" for cmd, desc in zip(commands, description)]
+submenu_title = f"Command name and description. Select command.\n{'=' * 60}"
 
 
 def show_menu():
@@ -77,15 +79,12 @@ def show_edit_submenu():
 def command_handler(command):
     if not isinstance(command, int):
         try:
-            command = get_close_matches(command, all_commands, n=1, cutoff=0.5)[0]
+            command = get_close_matches(command, all_commands, n=1, cutoff=0.4)[0]
             # print(all_commands)
             print(f'You have chosen a command: {command}')
         except IndexError:
             print("Sorry, I don't understand. Please try again.")
             return True
-    if command == "help" or command == 6:
-        show_submenu()
-        # return command_handler(show_commands())
     if command == "add" or command == 0:
         try:
             name = input("Enter name: ").title().strip()
@@ -110,10 +109,15 @@ def command_handler(command):
         addressbook.save_data()
         return True
     if command == "find" or command == 3:
-        value = input("Enter name/phone/birthday for find: ")
+        value = input("Enter contact name: ")
         addressbook.to_find(value)
         return True
-    if command in update_commands or command == 4:
+    if command in days_to_birthday_commands or command == 4:
+        period = input("Enter days to birthday: ")
+        print(f"Days to birthday {period}")
+        days_to_birthday(period)
+        return True
+    if command in update_commands or command == 5:
         updated_position = show_edit_submenu()
         if updated_position == 0:
             old_value = input("Enter old name: ").title()
@@ -148,10 +152,13 @@ def command_handler(command):
         else:
             print("Wrong command")
             return True
-    if command in back_to_menu_commands or command == 5:
+    if command in back_to_menu_commands or command == 6:
         show_menu()
         return True
-    if command in exit_commands or command == 7:
+    if command == "help" or command == 7:
+        show_submenu()
+        # return command_handler(show_commands())
+    if command in exit_commands or command == 8:
         print("Goodbye!")
         addressbook.save_data()
         return False
@@ -167,8 +174,6 @@ def notes_handler(command):
         except IndexError:
             print("Sorry, I don't understand. Please try again.")
             return True
-    if command == "help" or command == 6:
-        show_submenu() #дополнить команды по notes
     if command == "add" or command == 0:
         try:
             title = input("Enter title: ").title().strip()
@@ -217,6 +222,9 @@ def notes_handler(command):
             return True
     if command in back_to_menu_commands or command == 5:
         show_menu()
+        return True
+    if command == "help" or command == 6:
+        show_submenu()  # дополнить команды по notes
         return True
     if command in exit_commands or command == 7:
         print("Goodbye!")

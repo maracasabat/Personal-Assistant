@@ -344,7 +344,8 @@ def notes_handler(command):
             note = NoteBookRecord(Name(title), NoteBookText(text))
             tegs_list = teg.split(',')
             for tg in tegs_list:
-                note.add_teg(NoteBookTeg(tg.strip()))
+                if tg != '':
+                    note.add_teg(NoteBookTeg(tg.strip()))
             notebook.add_record(note)
             notebook.save_data()
             return True

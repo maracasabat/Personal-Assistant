@@ -1,5 +1,4 @@
 import sys
-
 from pick import pick
 import os
 from difflib import get_close_matches
@@ -264,6 +263,7 @@ def contacts_handler(command):
                     addressbook[new_value] = record
                     print(f"{bcolors.OKGREEN}Record {bcolors.HEADER}{old_value}{bcolors.OKGREEN} was updated to {bcolors.HEADER} {new_value}{bcolors.ENDC}")
                     return True
+            print(f"{bcolors.WARNING}Record {bcolors.HEADER}{old_value}{bcolors.WARNING} was not found{bcolors.ENDC}")
             addressbook.save_data()
             return True
         elif updated_position == 1:
@@ -278,7 +278,7 @@ def contacts_handler(command):
                     record.phones.append(Phone(new_value))
                     print(f"{bcolors.OKGREEN}Phone number was updated!{bcolors.ENDC}")
             else:
-                print(f'{bcolors.WARNING}Contact name: {name} was not found!{bcolors.ENDC}')
+                print(f'{bcolors.WARNING}Contact name {bcolors.HEADER}{name}{bcolors.WARNING} was not found!{bcolors.ENDC}')
             addressbook.save_data()
             return True
         elif updated_position == 2:
@@ -300,7 +300,7 @@ def contacts_handler(command):
                 record.email = Email(new_value)
                 print(f"{bcolors.OKGREEN}Contact email was updated to: {bcolors.HEADER} {new_value}{bcolors.ENDC}")
             else:
-                print(f'{bcolors.WARNING}Contact {name} is not found{bcolors.ENDC}!')
+                print(f'{bcolors.WARNING}Contact {bcolors.HEADER}{name}{bcolors.WARNING} was not found{bcolors.ENDC}!')
             addressbook.save_data()
             return True
         elif updated_position == 4:
@@ -311,7 +311,7 @@ def contacts_handler(command):
                 record.birthday = Birthday(new_value)
                 print(f"{bcolors.OKGREEN}Birthday {bcolors.HEADER}{new_value}{bcolors.OKGREEN} was added to {bcolors.HEADER}{name}{bcolors.ENDC}")
             else:
-                print(f'{bcolors.WARNING}Contact {name} is not found{bcolors.ENDC}!')
+                print(f'{bcolors.WARNING}Contact {bcolors.HEADER}{name}{bcolors.WARNING} is not found{bcolors.ENDC}!')
             addressbook.save_data()
             return True
         elif updated_position == 5:

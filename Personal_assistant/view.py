@@ -246,29 +246,54 @@ def contacts_handler(command):
         if updated_position == 0:
             old_value = input("Enter old name: ").title()
             new_value = input("Enter new name: ").title()
-            addressbook.update_record(old_value, new_value)
+            for name, record in addressbook.data.items():
+                if name == old_value:
+                    record.name.value = new_value
+                    addressbook.pop(old_value)
+                    addressbook[new_value] = record
+                    print(f"Record {old_value} was updated to {new_value}")
+                    return True
             addressbook.save_data()
             return True
         elif updated_position == 1:
-            old_value = input("Enter old phone-number: ")
+            name = input("Enter name: ").title().strip()
             new_value = input("Enter new phone-number: ")
-            addressbook.update_record(old_value, Phone(new_value))
+            record = addressbook.get(name, -1)
+            if record != -1:
+                record.phone[0] = Phone(new_value)
+            else:
+                print(f'Note title {name} is not found')
+            addressbook.save_data()
             return True
         elif updated_position == 2:
-            old_value = input("Enter old address: ").strip()
+            name = input("Enter name: ").title().strip()
             new_value = input("Enter new address: ").strip()
-            addressbook.update_record(old_value, Address(new_value))
+            record = addressbook.get(name, -1)
+            if record != -1:
+                record.address = Address(new_value)
+            else:
+                print(f'Note title {name} is not found')
             addressbook.save_data()
             return True
         elif updated_position == 3:
-            old_value = input("Enter old email: ").strip()
+            name = input("Enter name: ").title().strip()
             new_value = input("Enter new email: ").strip()
-            addressbook.update_record(old_value, Email(new_value))
+            record = addressbook.get(name, -1)
+            if record != -1:
+                record.email = Email(new_value)
+            else:
+                print(f'Note title {name} is not found')
+            addressbook.save_data()
             return True
         elif updated_position == 4:
-            old_value = input("Enter old birthday: ")
+            name = input("Enter name: ").title().strip()
             new_value = input("Enter new birthday: ")
-            addressbook.update_record(old_value, new_value)
+            record = addressbook.get(name, -1)
+            if record != -1:
+                record.birthday = Birthday(new_value)
+            else:
+                print(f'Note title {name} is not found')
+            addressbook.save_data()
             return True
         elif updated_position == 5:
             addressbook.save_data()

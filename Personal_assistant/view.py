@@ -196,8 +196,15 @@ def contacts_handler(command):
             address = input("Enter address: ").strip()
             email = input("Enter email: ").strip()
             birthday = input("Enter birthday dd-mm-yyyy: ").strip()
-            record = Record(Name(name), Phone(phone_number), Address(address), Email(email))
-            record.add_birthday(Birthday(birthday))
+            address_new = None
+            if address:
+                address_new = Address(address)
+            email_new = None
+            if email:
+                email_new = Email(email)
+            record = Record(Name(name), Phone(phone_number), address_new, email_new)
+            if birthday:
+                record.add_birthday(Birthday(birthday))
             addressbook.add_record(record)
             addressbook.save_data()
             return True
@@ -337,7 +344,8 @@ def notes_handler(command):
             note = NoteBookRecord(Name(title), NoteBookText(text))
             tegs_list = teg.split(',')
             for tg in tegs_list:
-                note.add_teg(NoteBookTeg(tg.strip()))
+                if tg != '':
+                    note.add_teg(NoteBookTeg(tg.strip()))
             notebook.add_record(note)
             notebook.save_data()
             return True

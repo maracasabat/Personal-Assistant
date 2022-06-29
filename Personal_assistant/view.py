@@ -5,6 +5,7 @@ from Personal_assistant.helpers import days_to_birthday
 from sorter import start
 from styles import show_records, show_notes, show_print, bcolors, pretty_title
 from classes import Record, SomeBook, Name, Phone, Address, Email, Birthday, NoteBookRecord, NoteBookText, NoteBookTeg
+from datetime import datetime
 
 addressbook = SomeBook('data.bin')
 notebook = SomeBook('notebook_data.bin')
@@ -219,7 +220,26 @@ def contacts_handler(command):
     if command in days_to_birthday_commands or command == 4:
         period = input("Enter days to birthday: ")
         print(f"Days to birthday {period}")
-        days_to_birthday(period)
+        num = 0
+        try:
+            num = int(period)
+        except ValueError:
+            print('Enter integer')
+            return ''
+        res = []
+        for k, v in addressbook.items():
+            if v.birthday is None:
+                continue
+            date_now = datetime.now().date()
+            birthday_date = datetime(day=v.birthday.value.day, month=v.birthday.value.month, year=date_now.year).date()
+            if date_now > birthday_date:
+                birthday_date = datetime(day=v.birthday.value.day, month=v.birthday.value.month,
+                                         year=date_now.year + 1).date()
+            result = birthday_date - date_now
+            if result.days <= num:
+                res.append(v)
+        print("\n".join([f"{value.name.value.title()}: {value}" for value in res]) if len(
+            res) > 0 else 'Contacts not found')
         return True
     if command in update_commands or command == 5:
         updated_position = show_edit_contact_submenu()
@@ -381,3 +401,4 @@ def notes_handler(command):
         return False
     else:
         print(f"{bcolors.WARNING}Unknown command{bcolors.ENDC}")
+

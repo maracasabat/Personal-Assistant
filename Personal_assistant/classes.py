@@ -57,35 +57,32 @@ class Phone(Field):
 class Email(Field):
     @Field.value.setter
     def value(self, email: str):
-        if len(email) > 0:
-            if not isinstance(email, str):
-                raise TypeError('Email must be a string')
-            if not re.match(EMAIL_REGEX, email):
-                raise ValueError('Email not valid')
-            self._value = email
+        if not isinstance(email, str):
+            raise TypeError('Email must be a string')
+        if not re.match(EMAIL_REGEX, email):
+            raise ValueError('Email not valid')
+        self._value = email
 
 
 class Birthday(Field):
     @Field.value.setter
     def value(self, new_value):
-        if len(new_value) > 0:
-            try:
-                d, m, y = new_value.split('-')
-                date = datetime(day=int(d), month=int(m), year=int(y))
-                self._value = date.date()
-            except ValueError:
-                print('Enter date like dd-mm-yyyy')
+        try:
+            d, m, y = new_value.split('-')
+            date = datetime(day=int(d), month=int(m), year=int(y))
+            self._value = date.date()
+        except ValueError:
+            print('Enter date like dd-mm-yyyy')
 
 
 class Address(Field):
     @Field.value.setter
     def value(self, address: str):
-        if len(address) > 0:
-            if not isinstance(address, str):
-                raise TypeError('Address must be a string')
-            if not re.match(ADDRESS_REGEX, address):
-                raise ValueError('Address must be between 2 and 20 characters')
-            self._value = address
+        if not isinstance(address, str):
+             raise TypeError('Address must be a string')
+        # if not re.match(ADDRESS_REGEX, address):
+        #     raise ValueError('Address must be between 2 and 20 characters')
+        self._value = address
 
 
 class NoteBookText(Field):
@@ -115,7 +112,7 @@ class NoteBookRecord:
 
 
 class Record:
-    def __init__(self, name: Name, phone: Phone, adr: Address = None, email: Email = None, birthday: Birthday = None):
+    def __init__(self, name: Name, phone: Phone, adr: Address, email: Email, birthday: Birthday = None):
         self.name = name
         self.address = adr
         self.email = email
@@ -132,9 +129,20 @@ class Record:
             self.birthday = birthday
 
     def __repr__(self):
+        new_str = f'{", ".join([p.value for p in self.phones])},'
+        if self.email:
+            new_str += f' {self.email.value},'
+        else:
+            new_str += f' {None},'
+        if self.address:
+            new_str += f' {self.address.value},'
+        else:
+            new_str += f' {None},'
         if self.birthday:
-            return f'{", ".join([p.value for p in self.phones])}, {self.email.value}, {self.address.value}, {self.birthday.value}'
-        return f'{", ".join([p.value for p in self.phones])}, {self.address.value}, {self.email.value}'
+            new_str += f' {self.birthday.value}'
+        else:
+            new_str += f' {None}'
+        return new_str
 
 
 class SomeBook(UserDict):
@@ -176,7 +184,7 @@ class SomeBook(UserDict):
             self.pop(name)
             return print(f"{bcolors.OKGREEN}Record {name} was  deleted successfully!{bcolors.ENDC}")
 
-        return print(f"{bcolors.WARNING}Record {name} was not found! Please try again. {bcolors.ENDC}")
+        return print(f"{bcolors.WARNING}Record {bcolors.HEADER}{name}{bcolors.WARNING} was not found! Please try again. {bcolors.ENDC}")
 
     def update_record(self, old_value, new_value):
         new_value = str(new_value)
@@ -187,6 +195,7 @@ class SomeBook(UserDict):
                 return print(f"Record {old_value} was updated to {new_value}")
 
             if old_value in str(record):
+                # list_records = []
                 new_record = str(record).replace(old_value, new_value)
                 self.data[name] = new_record
                 return print(f"Record {record} was updated to {new_record}")

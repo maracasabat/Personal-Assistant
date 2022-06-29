@@ -57,11 +57,12 @@ class Phone(Field):
 class Email(Field):
     @Field.value.setter
     def value(self, email: str):
-        if not isinstance(email, str):
-            raise TypeError('Email must be a string')
-        if not re.match(EMAIL_REGEX, email):
-            raise ValueError('Email not valid')
-        self._value = email
+        if len(email) > 0:
+            if not isinstance(email, str):
+                raise TypeError('Email must be a string')
+            if not re.match(EMAIL_REGEX, email):
+                raise ValueError('Email not valid')
+            self._value = email
 
 
 class Birthday(Field):
@@ -78,11 +79,12 @@ class Birthday(Field):
 class Address(Field):
     @Field.value.setter
     def value(self, address: str):
-        if not isinstance(address, str):
-             raise TypeError('Address must be a string')
-        # if not re.match(ADDRESS_REGEX, address):
-        #     raise ValueError('Address must be between 2 and 20 characters')
-        self._value = address
+        if len(address) > 0:
+            if not isinstance(address, str):
+                raise TypeError('Address must be a string')
+            if not re.match(ADDRESS_REGEX, address):
+                raise ValueError('Address must be between 2 and 20 characters')
+            self._value = address
 
 
 class NoteBookText(Field):
@@ -112,7 +114,7 @@ class NoteBookRecord:
 
 
 class Record:
-    def __init__(self, name: Name, phone: Phone, adr: Address, email: Email, birthday: Birthday = None):
+    def __init__(self, name: Name, phone: Phone, adr: Address = None, email: Email = None, birthday: Birthday = None):
         self.name = name
         self.address = adr
         self.email = email

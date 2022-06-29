@@ -42,15 +42,6 @@ def show_records(addressbook):
     return print(records)
 
 
-# def show_print(note):
-#     pretty_title(f'Your Note:')
-#     test_notes.field_names = ["Title", "Text", "Tags"]
-#     test_notes.clear_rows()
-#     test_notes.add_row(note)
-#
-#     return print(test_notes)
-
-
 def show_notes(notebook):
     notes.field_names = ["Title", "Tags", "Text"]
     notes.clear_rows()

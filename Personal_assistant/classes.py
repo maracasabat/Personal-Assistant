@@ -68,12 +68,13 @@ class Email(Field):
 class Birthday(Field):
     @Field.value.setter
     def value(self, new_value):
-        try:
-            d, m, y = new_value.split('-')
-            date = datetime(day=int(d), month=int(m), year=int(y))
-            self._value = date
-        except ValueError:
-            print('Enter date like dd-mm-yyyy')
+        if len(new_value) > 0:
+            try:
+                d, m, y = new_value.split('-')
+                date = datetime(day=int(d), month=int(m), year=int(y))
+                self._value = date.date()
+            except ValueError:
+                print('Enter date like dd-mm-yyyy')
 
 
 class Address(Field):

@@ -79,9 +79,9 @@ class Address(Field):
     @Field.value.setter
     def value(self, address: str):
         if not isinstance(address, str):
-            raise TypeError('Address must be a string')
-        if not re.match(ADDRESS_REGEX, address):
-            raise ValueError('Address must be between 2 and 20 characters')
+             raise TypeError('Address must be a string')
+        # if not re.match(ADDRESS_REGEX, address):
+        #     raise ValueError('Address must be between 2 and 20 characters')
         self._value = address
 
 

@@ -301,6 +301,7 @@ def contacts_handler(command):
             addressbook.save_data()
             return True
         elif updated_position == 5:
+            show_contacts_submenu()
             addressbook.save_data()
             return True
         else:
@@ -418,6 +419,9 @@ def notes_handler(command):
             if note != -1:
                 note.del_teg(new_teg)
             notebook.save_data()
+            return True
+        if updated_position == 4:
+            show_notes_submenu()
             return True
     if command in back_to_menu_commands or command == 6:
         show_menu()

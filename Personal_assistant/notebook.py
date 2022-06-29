@@ -1,4 +1,5 @@
 from Personal_assistant.classes import SomeBook, NoteBookRecord, NoteBookText, NoteBookTeg, Name
+from Personal_assistant.styles import bcolors
 
 notebook = SomeBook('../notebook_data.bin')
 
@@ -41,9 +42,9 @@ def print_text(*args):
 
 
 @input_error
-def show_all(*args):
+def show_all_notes(*args):
     return "\n".join([f"{v}" for k, v in notebook.items()]) if len(
-        notebook) > 0 else 'Contacts are empty'
+        notebook) > 0 else f'{bcolors.OKBLUE}No notes yet!{bcolors.ENDC}'
 
 
 @input_error
@@ -102,7 +103,7 @@ all_commands = {
     add_note: ["add", "new", "+"],
     #     change_number: ["change", ],
     print_text: ["text"],
-    show_all: ["show all", "show"],
+    show_all_notes: ["show all", "show"],
     to_exit: ["good bye", "close", "exit", ".", "bye"],
     del_teg: ["del", "delete", "-"],
     set_teg: ["set"],

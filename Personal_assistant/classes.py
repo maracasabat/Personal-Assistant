@@ -3,9 +3,11 @@ from collections import UserDict
 from datetime import datetime
 import re
 
+from Personal_assistant.styles import bcolors
+
 PHONE_REGEX = re.compile(r"^\+?(\d{2})?\(?(0\d{2})\)?(\d{7}$)")
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
-NAME_REGEX = re.compile(r'^[a-zA-Zа-яА-Я]{2,20}$')
+NAME_REGEX = re.compile(r'^[a-zA-Zа-яА-Я0-9,. ]{2,50}$')
 ADDRESS_REGEX = re.compile(r'^[a-zA-Zа-яА-Я0-9,. ]{2,20}$')
 
 
@@ -27,14 +29,13 @@ class Field:
 
 
 class Name(Field):
-    # @Field.value.setter
-    # def value(self, name: str):
-    #     if not isinstance(name, str):
-    #         raise TypeError("Name must be a string")
-    #     if not re.match(NAME_REGEX, name):
-    #         raise ValueError('Name must be between 2 and 20 characters')
-    #     self._value = name
-    pass
+    @Field.value.setter
+    def value(self, name: str):
+        if not isinstance(name, str):
+            raise TypeError("Name must be a string")
+        if not re.match(NAME_REGEX, name):
+            raise ValueError('Name must be between 2 and 50 characters')
+        self._value = name
 
 
 class Phone(Field):
@@ -69,7 +70,7 @@ class Birthday(Field):
         try:
             d, m, y = new_value.split('-')
             date = datetime(day=int(d), month=int(m), year=int(y))
-            self._value = date.date()
+            self._value = date
         except ValueError:
             print('Enter date like dd-mm-yyyy')
 
@@ -99,7 +100,7 @@ class NoteBookRecord:
         self.tegs = []
 
     def __repr__(self):
-        return f'{self.name.value.title()}, {", ".join([p.value for p in self.tegs])}, {self.text.value}'
+        return f'{self.name.value.title()}; {", ".join([p.value for p in self.tegs])}; {self.text.value}'
 
     def add_teg(self, teg: NoteBookTeg):
         self.tegs.append(teg)
@@ -138,6 +139,7 @@ class SomeBook(UserDict):
     def add_record(self, record: Record) -> Record | None:
         if not self.data.get(record.name.value):
             self.data[record.name.value] = record
+            self.save_data()
             return record
 
     def __init__(self, save_file, *args):
@@ -169,9 +171,9 @@ class SomeBook(UserDict):
     def delete_record(self, name):
         if name in self:
             self.pop(name)
-            return print(f"Record {name} was deleted")
+            return print(f"{bcolors.OKGREEN}Record {name} was  deleted successfully!{bcolors.ENDC}")
 
-        return print(f"Record {name} was not found")
+        return print(f"{bcolors.WARNING}Record {name} was not found! Please try again. {bcolors.ENDC}")
 
     def update_record(self, old_value, new_value):
         new_value = str(new_value)
@@ -182,7 +184,7 @@ class SomeBook(UserDict):
                 return print(f"Record {old_value} was updated to {new_value}")
 
             if old_value in str(record):
-                list_records = []
+                # list_records = []
                 new_record = str(record).replace(old_value, new_value)
                 self.data[name] = new_record
                 return print(f"Record {record} was updated to {new_record}")

@@ -42,23 +42,30 @@ def show_records(addressbook):
     return print(records)
 
 
+# def show_print(note):
+#     pretty_title(f'Your Note:')
+#     test_notes.field_names = ["Title", "Text", "Tags"]
+#     test_notes.clear_rows()
+#     test_notes.add_row(note)
+#
+#     return print(test_notes)
+
+
 def show_notes(notebook):
     notes.field_names = ["Title", "Text", "Tags"]
     notes.clear_rows()
-    notes_list = []
-    for k, v in notebook.items():
-        value = str(v).split(',')
-        new_note = [k] + value
-        notes_list.append(new_note)
-
-    for note in notes_list:
-        notes.add_row(note)
+    for note in notebook.values():
+        record = str(note).split(';')
+        notes.add_row(record)
 
     return print(notes)
 
 
 def show_print(note):
+    pretty_title(f'Your Note:')
     test_notes.field_names = ["Title", "Text", "Tags"]
+    note = str(note).split(';')
+    test_notes.clear_rows()
     test_notes.add_row(note)
 
     return print(test_notes)

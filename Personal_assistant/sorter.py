@@ -1,8 +1,8 @@
 from pathlib import Path
 import shutil
 import sys
-import Personal_assistant.file_parser as parser
-from Personal_assistant.normalize import normalize
+import file_parser as parser
+from normalize import normalize
 
 
 def handle_media(filename: Path, target_folder: Path):
@@ -23,7 +23,7 @@ def handle_documents(filename: Path, target_folder: Path):
 def handle_archives(filename: Path, target_folder: Path):
     target_folder.mkdir(exist_ok=True, parents=True)
     folder_for_file = target_folder / \
-        normalize(filename.name.replace('filename.suffix', ''))
+                      normalize(filename.name.replace('filename.suffix', ''))
     folder_for_file.mkdir(exist_ok=True, parents=True)
     try:
         shutil.unpack_archive(str(filename.resolve()),
@@ -96,16 +96,33 @@ def main(folder: Path):
         handle_folder(folder)
 
 
-def start():
-    print('Successfully')
-    if sys.argv[1]:
-        folder_for_scan = Path(sys.argv[1])
-        print(f'Start in folder {folder_for_scan.resolve()}')
-        main(folder_for_scan.resolve())
-
-
+# def start():
+#     print('Successfully')
+#     if sys.argv[1]:
+#         folder_for_scan = Path(sys.argv[1])
+#         print(f'Start in folder {folder_for_scan.resolve()}')
+#         main(folder_for_scan.resolve())
+#
 # if __name__ == '__main__':
 #     if sys.argv[1]:
 #         folder_for_scan = Path(sys.argv[1])
 #         print(f'Start in folder {folder_for_scan.resolve()}')
 #         main(folder_for_scan.resolve())
+
+def start():
+    while True:
+        folder_for_scan = input('Enter folder for scan: ')
+        if folder_for_scan:
+            folder_for_scan = Path(folder_for_scan)
+            print(f'Start in folder {folder_for_scan.resolve()}')
+            main(folder_for_scan.resolve())
+        else:
+            input('Press Enter to exit...')
+            break
+
+
+# if __name__ == '__main__':
+#     start()
+#     print('Successfully')
+#     input('Press Enter to exit...')
+#     sys.exit(0)

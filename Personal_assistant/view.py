@@ -2,7 +2,7 @@ from pick import pick
 import os
 from difflib import get_close_matches
 from Personal_assistant.helpers import days_to_birthday
-from Personal_assistant.sorter import main, start
+from sorter import start
 from styles import show_records, show_notes, show_print, bcolors, pretty_title
 from classes import Record, SomeBook, Name, Phone, Address, Email, Birthday, NoteBookRecord, NoteBookText, NoteBookTeg
 
@@ -41,8 +41,8 @@ help_submenu_options = [f"{cmd:<30} -  {desc}" for cmd, desc in
 help_submenu_title = f"Command name and description. Select command.\n{'=' * 60}"
 
 sorter_submenu_options = [f"{cmd:<30} -  {desc}" for cmd, desc in
-                          zip(['Option 1', 'Option 2', 'Option 3'],
-                              ['Description option 1', 'Description option 2', 'Description option 3'])]
+                          zip(['File sorter', 'Back to menu'],
+                              ['Please choose a folder to sort', 'Exit to the main menu'])]
 sorter_submenu_title = f"Command name and description. Select command.\n{'=' * 60}"
 
 
@@ -61,11 +61,13 @@ def sorter_submenu_switcher(index):
 
 def sorter_handler(index):
     if index == 0:
-        print("Здесь функция которая обрабатывает Option 1")
+        start()
+        print('For sorted files, please choose a folder to sort.')
     if index == 1:
-        print("Здесь функция которая обрабатывает Option 2")
-    if index == 2:
-        print("Здесь функция которая обрабатывает Option 3")
+        show_menu()
+        print('Back to menu')
+    # if index == 2:
+    #     print("Здесь функция которая обрабатывает Option 3")
 
 
 # ============================= Main Menu =================+++++++=================================

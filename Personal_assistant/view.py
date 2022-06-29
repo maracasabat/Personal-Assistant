@@ -1,3 +1,5 @@
+import sys
+
 from pick import pick
 import os
 from difflib import get_close_matches
@@ -316,7 +318,8 @@ def contacts_handler(command):
     if command in exit_commands or command == 8:
         pretty_title("Goodbye!")
         addressbook.save_data()
-        return False
+        sys.exit(0)
+        # return False
     else:
         print(f"{bcolors.WARNING}Unknown command{bcolors.ENDC}")
 
@@ -434,6 +437,7 @@ def notes_handler(command):
     if command in exit_commands or command == 8:
         pretty_title("Goodbye!")
         notebook.save_data()
-        return False
+        sys.exit(0)
+        # return False
     else:
         print(f"{bcolors.WARNING}Unknown command{bcolors.ENDC}")

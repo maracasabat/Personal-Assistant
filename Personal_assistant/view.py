@@ -1,7 +1,6 @@
 from pick import pick
 import os
 from difflib import get_close_matches
-from Personal_assistant.helpers import days_to_birthday
 from sorter import start
 from styles import show_records, show_notes, show_print, bcolors, pretty_title
 from classes import Record, SomeBook, Name, Phone, Address, Email, Birthday, NoteBookRecord, NoteBookText, NoteBookTeg

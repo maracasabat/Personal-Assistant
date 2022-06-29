@@ -52,7 +52,7 @@ def show_records(addressbook):
 
 
 def show_notes(notebook):
-    notes.field_names = ["Title", "Text", "Tags"]
+    notes.field_names = ["Title", "Tags", "Text"]
     notes.clear_rows()
     for note in notebook.values():
         record = str(note).split(';')
@@ -63,7 +63,7 @@ def show_notes(notebook):
 
 def show_print(note):
     pretty_title(f'Your Note:')
-    test_notes.field_names = ["Title", "Text", "Tags"]
+    test_notes.field_names = ["Title", "Tags", "Text"]
     note = str(note).split(';')
     test_notes.clear_rows()
     test_notes.add_row(note)

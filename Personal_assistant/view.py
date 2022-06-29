@@ -262,7 +262,7 @@ def contacts_handler(command):
                     record.name.value = new_value
                     addressbook.pop(old_value)
                     addressbook[new_value] = record
-                    print(f"{bcolors.OKGREEN}Record {bcolors.HEADER}{old_value}{bcolors.OKGREEN}was updated to {bcolors.HEADER} {new_value}{bcolors.ENDC}")
+                    print(f"{bcolors.OKGREEN}Record {bcolors.HEADER}{old_value}{bcolors.OKGREEN} was updated to {bcolors.HEADER} {new_value}{bcolors.ENDC}")
                     return True
             addressbook.save_data()
             return True
@@ -273,10 +273,12 @@ def contacts_handler(command):
             if record != -1:
                 if len(record.phones) >= 1:
                     record.phones[0] = Phone(new_value)
+                    print(f"{bcolors.OKGREEN}Phone number was updated!{bcolors.ENDC}")
                 else:
                     record.phones.append(Phone(new_value))
+                    print(f"{bcolors.OKGREEN}Phone number was updated!{bcolors.ENDC}")
             else:
-                print(f'{bcolors.WARNING}Contact name: {name} is not found!{bcolors.ENDC}')
+                print(f'{bcolors.WARNING}Contact name: {name} was not found!{bcolors.ENDC}')
             addressbook.save_data()
             return True
         elif updated_position == 2:
@@ -285,6 +287,7 @@ def contacts_handler(command):
             record = addressbook.get(name, -1)
             if record != -1:
                 record.address = Address(new_value)
+                print(f"{bcolors.OKGREEN}Contact address was updated to: {bcolors.HEADER}{new_value}{bcolors.ENDC}")
             else:
                 print(f'{bcolors.WARNING}Note title {name} is not found!{bcolors.ENDC}')
             addressbook.save_data()
@@ -295,6 +298,7 @@ def contacts_handler(command):
             record = addressbook.get(name, -1)
             if record != -1:
                 record.email = Email(new_value)
+                print(f"{bcolors.OKGREEN}Contact email was updated to: {bcolors.HEADER} {new_value}{bcolors.ENDC}")
             else:
                 print(f'{bcolors.WARNING}Contact {name} is not found{bcolors.ENDC}!')
             addressbook.save_data()
@@ -305,6 +309,7 @@ def contacts_handler(command):
             record = addressbook.get(name, -1)
             if record != -1:
                 record.birthday = Birthday(new_value)
+                print(f"{bcolors.OKGREEN}Birthday {bcolors.HEADER}{new_value}{bcolors.OKGREEN} was added to {bcolors.HEADER}{name}{bcolors.ENDC}")
             else:
                 print(f'{bcolors.WARNING}Contact {name} is not found{bcolors.ENDC}!')
             addressbook.save_data()

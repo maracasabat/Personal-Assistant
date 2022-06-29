@@ -187,7 +187,6 @@ class SomeBook(UserDict):
                 return print(f"Record {old_value} was updated to {new_value}")
 
             if old_value in str(record):
-                # list_records = []
                 new_record = str(record).replace(old_value, new_value)
                 self.data[name] = new_record
                 return print(f"Record {record} was updated to {new_record}")

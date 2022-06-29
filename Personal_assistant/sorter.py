@@ -102,6 +102,7 @@ def start():
             folder_for_scan = Path(folder_for_scan)
             print(f'Start in folder {folder_for_scan.resolve()}')
             main(folder_for_scan.resolve())
+            print('Successfully!')
         else:
             input('Press Enter to exit...')
             break

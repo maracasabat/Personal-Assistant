@@ -417,7 +417,7 @@ def notes_handler(command):
             note = notebook.get(name, -1)
             if note != -1:
                 note.text = NoteBookText(new_text)
-            print(f'{bcolors.WARNING}Note title :{bcolors.HEADER}{name}{bcolors.WARNING} is not found!{bcolors.ENDC}')
+            print(f'{bcolors.WARNING}Note title :{bcolors.HEADER}{name}{bcolors.WARNING} update successfully!{bcolors.ENDC}')
             notebook.save_data()
             return True
         if updated_position == 2:
@@ -426,7 +426,7 @@ def notes_handler(command):
             note = notebook.get(name, -1)
             if note != -1:
                 note.add_teg(NoteBookTeg(new_teg))
-            print(f'{bcolors.WARNING}Note title {bcolors.HEADER}{name}{bcolors.WARNING} was not found!{bcolors.ENDC}')
+            print(f'{bcolors.WARNING}Note title {bcolors.HEADER}{name}{bcolors.WARNING} updated successfully!{bcolors.ENDC}')
             notebook.save_data()
             return True
         if updated_position == 3:
@@ -435,7 +435,7 @@ def notes_handler(command):
             note = notebook.get(name, -1)
             if note != -1:
                 note.del_teg(new_teg)
-            print(f'{bcolors.WARNING}Note title {bcolors.HEADER}{name}{bcolors.WARNING} was not found!{bcolors.ENDC}')
+            print(f'{bcolors.WARNING}Note title {bcolors.HEADER}{name}{bcolors.WARNING} updated successfully!{bcolors.ENDC}')
             notebook.save_data()
             return True
         if updated_position == 4:

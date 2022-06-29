@@ -70,7 +70,7 @@ class Birthday(Field):
         try:
             d, m, y = new_value.split('-')
             date = datetime(day=int(d), month=int(m), year=int(y))
-            self._value = date
+            self._value = date.date()
         except ValueError:
             print('Enter date like dd-mm-yyyy')
 
@@ -79,7 +79,7 @@ class Address(Field):
     @Field.value.setter
     def value(self, address: str):
         if not isinstance(address, str):
-             raise TypeError('Address must be a string')
+            raise TypeError('Address must be a string')
         # if not re.match(ADDRESS_REGEX, address):
         #     raise ValueError('Address must be between 2 and 20 characters')
         self._value = address

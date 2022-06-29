@@ -1,8 +1,8 @@
 from pathlib import Path
 import shutil
-import sys
-import file_parser as parser
-from normalize import normalize
+
+import Personal_assistant.file_parser as parser
+from .normalize import normalize
 
 
 def handle_media(filename: Path, target_folder: Path):
@@ -103,6 +103,7 @@ def start():
             folder_for_scan = Path(folder_for_scan)
             print(f'Start in folder {folder_for_scan.resolve()}')
             main(folder_for_scan.resolve())
+            print('Successfully!')
         else:
             input('Press Enter to exit...')
             break

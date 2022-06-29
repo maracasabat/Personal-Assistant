@@ -1,10 +1,13 @@
-from pick import pick
 import os
-from difflib import get_close_matches
-from sorter import start
-from styles import show_records, show_notes, show_print, bcolors, pretty_title
-from classes import Record, SomeBook, Name, Phone, Address, Email, Birthday, NoteBookRecord, NoteBookText, NoteBookTeg
 from datetime import datetime
+
+from difflib import get_close_matches
+from pick import pick
+
+from .sorter import start
+from .styles import show_records, show_notes, show_print, bcolors, pretty_title
+from .classes import Record, SomeBook, Name, Phone, Address, Email, Birthday, NoteBookRecord, NoteBookText, NoteBookTeg
+
 
 addressbook = SomeBook('data.bin')
 notebook = SomeBook('notebook_data.bin')
@@ -61,8 +64,8 @@ def sorter_submenu_switcher(index):
 
 def sorter_handler(index):
     if index == 0:
-        start()
         print('For sorted files, please choose a folder to sort.')
+        start()
     if index == 1:
         show_menu()
         print('Back to menu')

@@ -132,17 +132,17 @@ class Record:
         new_str = f'{", ".join([p.value for p in self.phones])},'
 
         if self.address:
-            new_str += f'{self.address.value},'
+            new_str += f' {self.address.value},'
         else:
-            new_str += f'{None},'
+            new_str += f' {None},'
         if self.email:
-            new_str += f'{self.email.value},'
+            new_str += f' {self.email.value},'
         else:
-            new_str += f'{None},'
+            new_str += f' {None},'
         if self.birthday:
-            new_str += f'{self.birthday.value},'
+            new_str += f' {self.birthday.value}'
         else:
-            new_str += f'{None},'
+            new_str += f' {None}'
         return new_str
 
 

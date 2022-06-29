@@ -82,7 +82,7 @@ def show_menu():
 
 def menu_switcher(index):
     if index == 0:
-        os.system('clear')
+        os.system('clear') | os.system('cls')
         pretty_title(f"Welcome to Addressbook.\n{'=' * 60}")
         addressbook.load_data()
         show_contacts_submenu()
@@ -91,7 +91,7 @@ def menu_switcher(index):
             command = input("Write your command: ").casefold().strip()
 
     if index == 1:
-        os.system('clear')
+        os.system('clear') | os.system('cls')
         pretty_title(f"Welcome to Notebook.\n{'=' * 60}")
         notebook.load_data()
         show_notes_submenu()
@@ -102,7 +102,7 @@ def menu_switcher(index):
     if index == 2:
         show_help_submenu()
     if index == 3:
-        os.system('clear')
+        os.system('clear') | os.system('cls')
         pretty_title(f"Welcome to Folder Sorter.\n{'=' * 60}")
         show_sorter_submenu()
         command = input("Write your command: ").casefold().strip()
@@ -182,7 +182,7 @@ def help_submenu_switcher(index):
 def contacts_handler(command):
     if not isinstance(command, int):
         try:
-            os.system('clear')
+            os.system('clear') | os.system('cls')
             command = get_close_matches(command, all_commands, n=1, cutoff=0.4)[0]
             print(f'{bcolors.OKGREEN}You have chosen a command: {bcolors.HEADER}{command}{bcolors.ENDC}')
         except IndexError:
@@ -190,7 +190,7 @@ def contacts_handler(command):
             return True
     if command == "add" or command == 0:
         try:
-            os.system('clear')
+            os.system('clear') | os.system('cls')
             pretty_title(f"Add contact please: \n{'=' * 40}")
             name = input("Enter name: ").title().strip()
             phone_number = input("Enter phone-number: ").strip()
@@ -293,7 +293,7 @@ def contacts_handler(command):
 def notes_handler(command):
     if not isinstance(command, int):
         try:
-            os.system('clear')
+            os.system('clear') | os.system('cls')
             command = get_close_matches(command, all_commands, n=1, cutoff=0.5)[0]
             print(f'{bcolors.OKGREEN}You have chosen a command: {bcolors.HEADER}{command}{bcolors.ENDC}')
         except IndexError:
@@ -301,7 +301,7 @@ def notes_handler(command):
             return True
     if command == "add" or command == 0:
         try:
-            os.system('clear')
+            os.system('clear') | os.system('cls')
             pretty_title(f"Add a note please:\n{'=' * 40}")
             title = input("Enter title: ").title().strip()
             text = input("Enter text: ").strip()

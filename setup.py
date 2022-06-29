@@ -16,5 +16,5 @@ setup(
     ],
     packages=find_namespace_packages(),
     entry_points={'console_scripts': [
-        'Personal_assistant=Personal_assistant.main:main']}
+        'Personal_assistant=Personal_assistant.view:show_menu']}
 )

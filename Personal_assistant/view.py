@@ -260,9 +260,12 @@ def contacts_handler(command):
             new_value = input("Enter new phone-number: ")
             record = addressbook.get(name, -1)
             if record != -1:
-                record.phone[0] = Phone(new_value)
+                if len(record.phones) >= 1:
+                    record.phones[0] = Phone(new_value)
+                else:
+                    record.phones.append(Phone(new_value))
             else:
-                print(f'Note title {name} is not found')
+                print(f'Note title {name}) is not found')
             addressbook.save_data()
             return True
         elif updated_position == 2:

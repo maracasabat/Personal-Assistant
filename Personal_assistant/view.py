@@ -196,8 +196,15 @@ def contacts_handler(command):
             address = input("Enter address: ").strip()
             email = input("Enter email: ").strip()
             birthday = input("Enter birthday dd-mm-yyyy: ").strip()
-            record = Record(Name(name), Phone(phone_number), Address(address), Email(email))
-            record.add_birthday(Birthday(birthday))
+            address_new = None
+            if address:
+                address_new = Address(address)
+            email_new = None
+            if email:
+                email_new = Email(email)
+            record = Record(Name(name), Phone(phone_number), address_new, email_new)
+            if birthday:
+                record.add_birthday(Birthday(birthday))
             addressbook.add_record(record)
             addressbook.save_data()
             return True

@@ -129,9 +129,21 @@ class Record:
             self.birthday = birthday
 
     def __repr__(self):
+        new_str = f'{", ".join([p.value for p in self.phones])},'
+
+        if self.address:
+            new_str += f'{self.address.value},'
+        else:
+            new_str += f'{None},'
+        if self.email:
+            new_str += f'{self.email.value},'
+        else:
+            new_str += f'{None},'
         if self.birthday:
-            return f'{", ".join([p.value for p in self.phones])}, {self.email.value}, {self.address.value}, {self.birthday.value}'
-        return f'{", ".join([p.value for p in self.phones])}, {self.address.value}, {self.email.value}'
+            new_str += f'{self.birthday.value},'
+        else:
+            new_str += f'{None},'
+        return new_str
 
 
 class SomeBook(UserDict):

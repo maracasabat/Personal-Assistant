@@ -70,7 +70,7 @@ class Birthday(Field):
         try:
             d, m, y = new_value.split('-')
             date = datetime(day=int(d), month=int(m), year=int(y))
-            self._value = date
+            self._value = date.date()
         except ValueError:
             print('Enter date like dd-mm-yyyy')
 

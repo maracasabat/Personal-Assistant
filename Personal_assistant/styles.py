@@ -54,7 +54,7 @@ def show_notes(notebook):
 
 def show_print(note):
     pretty_title(f'Your Note:')
-    test_notes.field_names = ["Title", "Tags", "Text"]
+    test_notes.field_names = ["Title", "Text", "Tags" ]
     note = str(note).split(';')
     test_notes.clear_rows()
     test_notes.add_row(note)

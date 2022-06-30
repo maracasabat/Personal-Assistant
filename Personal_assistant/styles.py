@@ -27,6 +27,8 @@ def pretty_title(text):
     return print(colored(text, color='blue'))
 
 
+#  ============= табличка для записей  =============
+
 def show_records(addressbook):
     records.field_names = ["Name", "Phone", "Email", "Address", "Birthday"]
     records.clear_rows()
@@ -42,14 +44,7 @@ def show_records(addressbook):
     return print(records)
 
 
-# def show_print(note):
-#     pretty_title(f'Your Note:')
-#     test_notes.field_names = ["Title", "Text", "Tags"]
-#     test_notes.clear_rows()
-#     test_notes.add_row(note)
-#
-#     return print(test_notes)
-
+#  ============= табличка для всех заметок  =============
 
 def show_notes(notebook):
     notes.field_names = ["Title", "Tags", "Text"]
@@ -61,9 +56,10 @@ def show_notes(notebook):
     return print(notes)
 
 
+# ============= табличка для созданной заметки  =============
 def show_print(note):
     pretty_title(f'Your Note:')
-    test_notes.field_names = ["Title", "Text", "Tags" ]
+    test_notes.field_names = ["Title", "Text", "Tags"]
     note = str(note).split(';')
     test_notes.clear_rows()
     test_notes.add_row(note)

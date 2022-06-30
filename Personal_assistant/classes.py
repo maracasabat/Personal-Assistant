@@ -184,7 +184,7 @@ class SomeBook(UserDict):
             self.pop(name)
             return print(f"{bcolors.OKGREEN}Record {name} was  deleted successfully!{bcolors.ENDC}")
 
-        return print(f"{bcolors.WARNING}Record {name} was not found! Please try again. {bcolors.ENDC}")
+        return print(f"{bcolors.WARNING}Record {bcolors.HEADER}{name}{bcolors.WARNING} was not found! Please try again. {bcolors.ENDC}")
 
     def update_record(self, old_value, new_value):
         new_value = str(new_value)

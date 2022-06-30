@@ -2,6 +2,8 @@
 
 ## **Our bot is a personal assistant that can help you with your daily tasks.**
 
+**Install Personal Assistant from terminal: Use command '```pip install -i https://test.pypi.org/simple/ Bot-for-notes-and-phones```'**
+
 1. *Save new contact with name, phone, address, email and birthday*
 2. *Change all information about contact.*
 3. *Shows your contacts, who have birthday in period, which you choose.*

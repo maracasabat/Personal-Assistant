@@ -1,4 +1,4 @@
-from view import show_menu, contacts_handler
+from view import show_menu
 
 
 def main():

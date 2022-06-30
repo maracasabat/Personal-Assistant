@@ -1,11 +1,14 @@
 import sys
-from pick import pick
 import os
+from datetime import datetime
+
+from pick import pick
 from difflib import get_close_matches
 from sorter import start
+
 from styles import show_records, show_notes, show_print, bcolors, pretty_title
 from classes import Record, SomeBook, Name, Phone, Address, Email, Birthday, NoteBookRecord, NoteBookText, NoteBookTeg
-from datetime import datetime
+
 
 addressbook = SomeBook('data.bin')
 notebook = SomeBook('notebook_data.bin')
